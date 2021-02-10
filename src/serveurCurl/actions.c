@@ -15,7 +15,7 @@ int verifierNouvelleConnexion(struct requete reqList[], int maxlen, int socket){
 
     // TODO
 }
-
+   
 int traiterConnexions(struct requete reqList[], int maxlen){
     // Cette fonction est partiellement implémentée pour vous
     // Elle utilise select() pour déterminer si une connexion cliente vient d'envoyer
@@ -71,23 +71,38 @@ int traiterConnexions(struct requete reqList[], int maxlen){
                         printf("\tContenu de la requete : %s\n", buffer + sizeof(req));
                     }
 
-                    // Ici, vous devez tout d'abord initialiser un nouveau pipe à l'aide de la fonction pipe()
-                    // Voyez man pipe pour plus d'informations sur son fonctionnement
-                    // TODO
+                    // Initialisation du pipe
+                    int pipefd[2];
+                    pid_t pid;
 
-                    // Une fois le pipe initialisé, vous devez effectuer un fork, à l'aide de la fonction du même nom
-                    // Cela divisera votre processus en deux nouveaux processus, un parent et un enfant.
+                    if (pipe(pipefd) == -1) {
+                        perror("pipe");
+                        exit(EXIT_FAILURE);
+                    }
+
+                    // le fork cree deux processus (parent, enfant)
+                    pid = fork();
+                    if (pid == -1) {
+                        perror("fork");
+                        exit(EXIT_FAILURE);
+                    }
+
+                    if (pid == 0) { /*processus enfant*/
+                        executerRequete(pipefd[1], buffer);
+                    } else { /*processus parent*/
+                        reqList[i].pid = pid;
+                        reqList[i].fdPipe = pipefd[0];
+                        reqList[i].status = REQ_STATUS_INPROGRESS;
+                    }
                     // - Dans le processus enfant, vous devez appeler la fonction executerRequete() en lui donnant
                     //      l'extrémité d'écriture du pipe et le buffer contenant la requête. Lorsque cette fonction
                     //      retourne, vous pouvez assumer que le téléchargement est terminé et quitter le processus.
                     // - Dans le processus parent, vous devez enregistrer le PID (id du processus) de l'enfant ainsi que
                     //      le descripteur de fichier de l'extrémité de lecture du pip dans la structure de la requête.
-                    //      Vous devez également passer son statut à REQ_STATUS_INPROGRESS.
+                    //      Vous devez également passer son statut (requete.status) à REQ_STATUS_INPROGRESS.
                     //
                     // Pour plus d'informations sur la fonction fork() et sur la manière de détecter si vous êtes dans
                     // le parent ou dans l'enfant, voyez man fork(2).
-                    // TODO
-
                 }
             }
         }
