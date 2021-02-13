@@ -228,13 +228,17 @@ static int setrfs_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
 // énoncées plus haut. Rappelez-vous en particulier qu'un pointeur est unique...
 static int setrfs_open(const char *path, struct fuse_file_info *fi)
 {
-		// TODO
+	// TODO
 	struct fuse_context *context = fuse_get_context();
 	struct cacheData *cache = (struct cacheData*)context->private_data;
+	struct cacheFichier *file = trouverFichier(path,cache);
 
-	struct cacheFichier *fd = trouverFichier(path,cache);
-	
-	if( != NULL){}
+	static unsigned int fh_count = 3;
+
+	if(file != NULL){
+		fi->fh = fh_count++;
+		return fh_count;
+	}
 }
 
 
