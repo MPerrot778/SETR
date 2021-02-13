@@ -82,13 +82,35 @@ static int setrfs_getattr(const char *path, struct stat *stbuf)
 {
 	// On récupère le contexte
 	struct fuse_context *context = fuse_get_context();
+	struct cacheData *cache = (struct cacheData*)context->private_data;
 
 	// Si vous avez enregistré dans données dans setrfs_init, alors elles sont disponibles dans context->private_data
 	// Ici, voici un exemple où nous les utilisons pour donner le bon propriétaire au fichier (l'utilisateur courant)
 	stbuf->st_uid = context->uid;		// On indique l'utilisateur actuel comme proprietaire
 	stbuf->st_gid = context->gid;		// Idem pour le groupe
+	stbuf->st_nlink = 0;
+	stbuf->st_ino = 0;
+	stbuf->st_rdev = 0;
+
 
 	// TODO
+	if(strcmp(path,"/") == 0){
+		stbuf->st_mode = S_IFDIR | 0777;
+		stbuf->st_size = 1024;
+	}
+	else{
+		stbuf->st_mode = S_IFREG | 0777;
+		struct cacheFichier *temp = trouverFichier(path,cache);
+
+		if(temp != NULL){
+			stbuf->st_size = temp->len;
+		}
+		else{
+			stbuf->st_size = 1024;
+		}
+		stbuf->st_size = sizeof(context->private_data);
+	}
+	return 0;
 }
 
 
@@ -207,6 +229,12 @@ static int setrfs_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
 static int setrfs_open(const char *path, struct fuse_file_info *fi)
 {
 		// TODO
+	struct fuse_context *context = fuse_get_context();
+	struct cacheData *cache = (struct cacheData*)context->private_data;
+
+	struct cacheFichier *fd = trouverFichier(path,cache);
+	
+	if( != NULL){}
 }
 
 
