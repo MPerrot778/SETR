@@ -43,10 +43,9 @@
 
 #include "fstools.h"
 
-
 const char unixSockPath[] = "/tmp/unixsocket";
 
-
+const uint64_t SIZE = 2^64-1;
 
 // Cette fonction initialise le cache et l'insère dans le contexte de FUSE, qui sera
 // accessible à toutes les autres fonctions.
@@ -82,13 +81,34 @@ static int setrfs_getattr(const char *path, struct stat *stbuf)
 {
 	// On récupère le contexte
 	struct fuse_context *context = fuse_get_context();
+	struct cacheData *cache = (struct cacheData*)context->private_data;
 
 	// Si vous avez enregistré dans données dans setrfs_init, alors elles sont disponibles dans context->private_data
 	// Ici, voici un exemple où nous les utilisons pour donner le bon propriétaire au fichier (l'utilisateur courant)
 	stbuf->st_uid = context->uid;		// On indique l'utilisateur actuel comme proprietaire
 	stbuf->st_gid = context->gid;		// Idem pour le groupe
+	stbuf->st_nlink = 0;
+	stbuf->st_ino = 0;
+	stbuf->st_rdev = 0;
+
 
 	// TODO
+	if(strcmp(path,"/") == 0){
+		stbuf->st_mode = S_IFDIR | 0777;
+		stbuf->st_size = 1024;
+	}
+	else{
+		stbuf->st_mode = S_IFREG | 0777;
+		struct cacheFichier *temp = trouverFichier(path,cache);
+
+		if(temp != NULL){
+			stbuf->st_size = temp->len;
+		}
+		else{
+			stbuf->st_size = 1024;
+		}
+	}
+	return 0;
 }
 
 
@@ -206,7 +226,29 @@ static int setrfs_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
 // énoncées plus haut. Rappelez-vous en particulier qu'un pointeur est unique...
 static int setrfs_open(const char *path, struct fuse_file_info *fi)
 {
-		// TODO
+	// TODO
+	struct fuse_context *context = fuse_get_context();
+	struct cacheData *cache = (struct cacheData*)context->private_data;
+	struct cacheFichier *file = trouverFichier(path,cache);
+
+	static uint64_t fh_count = 3;
+
+	if(file == NULL){
+		int sock = socket(AF_UNIX, SOCK_STREAM, 0);
+	    if(sock == -1){
+	        perror("Impossible d'initialiser le socket UNIX");
+	        return -1;
+	    }
+		
+
+	}
+
+	fi->fh = fh_count;
+	fh_count = (fh_count+1) % SIZE;
+
+	if(fh_count<3) fh_count=3;
+
+	return fi-> fh;
 }
 
 
