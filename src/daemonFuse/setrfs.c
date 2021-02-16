@@ -43,10 +43,9 @@
 
 #include "fstools.h"
 
-
 const char unixSockPath[] = "/tmp/unixsocket";
 
-
+const uint64_t SIZE = 2^64-1;
 
 // Cette fonction initialise le cache et l'insère dans le contexte de FUSE, qui sera
 // accessible à toutes les autres fonctions.
@@ -108,7 +107,6 @@ static int setrfs_getattr(const char *path, struct stat *stbuf)
 		else{
 			stbuf->st_size = 1024;
 		}
-		stbuf->st_size = sizeof(context->private_data);
 	}
 	return 0;
 }
@@ -233,12 +231,24 @@ static int setrfs_open(const char *path, struct fuse_file_info *fi)
 	struct cacheData *cache = (struct cacheData*)context->private_data;
 	struct cacheFichier *file = trouverFichier(path,cache);
 
-	static unsigned int fh_count = 3;
+	static uint64_t fh_count = 3;
 
-	if(file != NULL){
-		fi->fh = fh_count++;
-		return fh_count;
+	if(file == NULL){
+		int sock = socket(AF_UNIX, SOCK_STREAM, 0);
+	    if(sock == -1){
+	        perror("Impossible d'initialiser le socket UNIX");
+	        return -1;
+	    }
+		
+
 	}
+
+	fi->fh = fh_count;
+	fh_count = (fh_count+1) % SIZE;
+
+	if(fh_count<3) fh_count=3;
+
+	return fi-> fh;
 }
 
 
