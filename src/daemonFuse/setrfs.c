@@ -85,12 +85,10 @@ static int setrfs_getattr(const char *path, struct stat *stbuf)
 
 	// Si vous avez enregistré dans données dans setrfs_init, alors elles sont disponibles dans context->private_data
 	// Ici, voici un exemple où nous les utilisons pour donner le bon propriétaire au fichier (l'utilisateur courant)
+
+	memset(stuf, 0, sizeof(stbuf));
 	stbuf->st_uid = context->uid;		// On indique l'utilisateur actuel comme proprietaire
 	stbuf->st_gid = context->gid;		// Idem pour le groupe
-	stbuf->st_nlink = 0;
-	stbuf->st_ino = 0;
-	stbuf->st_rdev = 0;
-
 
 	// TODO
 	if(strcmp(path,"/") == 0){
@@ -239,11 +237,66 @@ static int setrfs_open(const char *path, struct fuse_file_info *fi)
 	        perror("Impossible d'initialiser le socket UNIX");
 	        return -1;
 	    }
-		
 
+		// Ecriture des parametres du socket
+	    struct sockaddr_un sockInfo;
+	    memset(&sockInfo, 0, sizeof(sockInfo));
+	    sockInfo.sun_family = AF_UNIX;
+	    strncpy(sockInfo.sun_path, unixSockPath, sizeof(sockInfo.sun_path) - 1);
+
+		// Formatage et envoi de la requete
+		//size_t len = strlen() + 1;		// +1 pour le caractere NULL de fin de chaine
+	    struct msgReq req;
+	    req.type = REQ_READ;
+	    req.sizePayload = sizeof(path);
+		int octetsTraites = envoyerMessage(sock, &req, path);
+
+		// On attend et on recoit le fichier demande
+		struct msgRep rep;
+		octetsTraites = read(sock, &rep, sizeof(rep));
+
+		// Verifie s'il y a eu une erreur dans la lecture du socket
+		if(octetsTraites == -1){
+			perror("Erreur en effectuant un read() sur un socket pret");
+			exit(1);
+		}
+		if(VERBOSE)
+			printf("Lecture de l'en-tete de la reponse sur le socket %i\n", sock);
+
+		// Verifie si le fichier est dans la liste des fichiers disponibles
+		if(rep.status == STATUS_ERREUR_TELECHARGEMENT){
+			return -ENOENT;
+		}
+		else{
+
+			pthread_mutex_lock(&(cache->mutex));
+			char* dataRecv = malloc(rep.sizePayload+1);
+			dataRecv[rep.sizePayload] = 0;
+			int totalRecu = 0;
+
+			while(totalRecu < rep.sizePayload){
+				octetsTraites = read(sock, dataRecv + totalRecu, totalRecu);
+				totalRecu += octetsTraites;
+			}
+			pthread_mutex_unlock(&(cache->mutex));
+
+			struct dataFichier *temp;
+
+			temp->nom = path;
+			temp->len = rep.sizePayload;
+			temp->offset = 0;
+			temp->next = NULL;
+			temp->prev = NULL;
+			memccpy(temp->data,dataRecv,rep.sizePayload);
+
+			insererFichier(temp,cache);
+			
+			free(dataRecv);
+		}
 	}
 
 	fi->fh = fh_count;
+	
 	fh_count = (fh_count+1) % SIZE;
 
 	if(fh_count<3) fh_count=3;
@@ -272,7 +325,33 @@ static int setrfs_open(const char *path, struct fuse_file_info *fi)
 static int setrfs_read(const char *path, char *buf, size_t size, off_t offset,
 		    struct fuse_file_info *fi)
 {
-		// TODO
+	// TODO
+	struct fuse_context *context = fuse_get_context();
+	struct cacheData *cache = (struct cacheData*)context->private_data;
+	struct cacheFichier *file = trouverFichier(path,cache);
+	size_t len;
+
+	(void) fi;
+	if(file==NULL){
+		return -ENOENT;
+	}
+
+	len = file->len;
+
+	if(offset < len){
+		if(offset + size > len){
+			size = len - offset;
+		}
+
+		memccpy(buf,file->len+offset,size); 
+		file->offset = offset+size;
+	}
+	else{
+		size = 0;
+	}
+
+	return size;
+
 }
 
 
@@ -281,7 +360,14 @@ static int setrfs_read(const char *path, char *buf, size_t size, off_t offset,
 // utilisée pour stocker ce fichier (pensez au buffer contenant son cache, son nom, etc.)
 static int setrfs_release(const char *path, struct fuse_file_info *fi)
 {
-		// TODO
+	// TODO
+	struct fuse_context *context = fuse_get_context();
+	struct cacheData *cache = (struct cacheData*)context->private_data;
+	struct cacheFichier *file = trouverFichier(path,cache);
+
+	fi->fh = NULL;
+	retirerFichier(file,cache);
+	return 0;
 }
 
 
