@@ -39,57 +39,69 @@ const char* statusDesc[] = {"Inoccupe", "Connexion client etablie", "En cours de
 // Contient les requetes en cours de traitement
 struct requete reqList[MAX_CONNEXIONS];
 
-
-void gererSignal(int signo) {
+static void gererSignal(int signo) {
     // Fonction affichant des statistiques sur les tâches en cours
     // lorsque SIGUSR1 (et _seulement_ SIGUSR1) est reçu
     // TODO
 
 }
 
-
-
-int main(int argc, char* argv[]){
+int main(int argc, char* argv[]){    
     // Chemin du socket UNIX
     // Linux ne supporte pas un chemin de plus de 108 octets (voir man 7 unix)
     char path[108] = "/tmp/unixsocket";
-    if(argc > 1)        // On peut également le passer en paramètre
+    struct sockaddr_un addr;                    // struct de type sockaddr_un
+
+    if(argc > 1)                                // On peut également le passer en paramètre
         strncpy(path, argv[1], sizeof(path));
-    unlink(path);       // Au cas ou le fichier liant le socket UNIX existerait deja
+    unlink(path);                               // Au cas ou le fichier liant le socket UNIX existerait deja
 
     // On initialise la liste des requêtes
     memset(&reqList, 0, sizeof(reqList));
 
     // TODO
     // Implémentez ici le code permettant d'attacher la fonction "gereSignal" au signal SIGUSR1
+    struct sigaction sig;
+    memset(&sig, '\0', sizeof(sig));
+    sig.sa_handler = &gererSignal;
+    if (sigaction(SIGUSR1, &sig, NULL) == -1) {
+        strerror(errno);
+        exit(EXIT_FAILURE);
+    }
+    
+    memset(&addr, 0, sizeof(addr));                             // initialise addr a 0
+    addr.sun_family = AF_UNIX;
+    strncpy(addr.sun_path, path, sizeof(addr.sun_path) - 1);
+    
+    int sock = socket(AF_UNIX, SOCK_STREAM, 0);  // creation du socket
+    if (sock == -1) {                           
+        strerror(errno);                         // affiche l'erreur
+        exit(EXIT_FAILURE);                      // quitter le processus
+    }
 
-
-    // TODO
-    // Création et initialisation du socket (il y a 5 étapes)
-    // 1) Créez une struct de type sockaddr_un et initialisez-la à 0.
-    //      Puis, désignez le socket comme étant de type AF_UNIX
-    //      Finalement, copiez le chemin vers le socket UNIX dans le bon attribut de la structure
-    //      Voyez man unix(7) pour plus de détails sur cette structure
-
-    // TODO
-    // 2) Créez le socket en utilisant la fonction socket().
-    //      Vérifiez si sa création a été effectuée avec succès, sinon quittez le processus en affichant l'erreur
-
-    // TODO
-    // 3) Utilisez fcntl() pour mettre le socket en mode non-bloquant
-    //      Vérifiez si l'opération a été effectuée avec succès, sinon quittez le processus en affichant l'erreur
-    //      Voyez man fcntl pour plus de détails sur le champ à modifier
-
-    // TODO
-    // 4) Faites un bind sur le socket
-    //      Vérifiez si l'opération a été effectuée avec succès, sinon quittez le processus en affichant l'erreur
-    //      Voyez man bind(2) pour plus de détails sur cette opération
+    // fcntl() pour mettre le socket en mode non-bloquant
+    // Vérifiez si l'opération a été effectuée avec succès, sinon quittez le processus en affichant l'erreur
+    int flags = fcntl(sock, F_GETFL, 0);                   
+    if (fcntl(sock, F_SETFL, flags | O_NONBLOCK) == -1) {
+        strerror(errno);
+        exit(EXIT_FAILURE);
+    }
+    
+    // bind sur le socket
+    // Vérifiez si l'opération a été effectuée avec succès, sinon quittez le processus en affichant l'erreur
+    if (bind(sock, (struct sockaddr_on*) &addr, sizeof(addr)) == -1) {
+        strerror(errno);
+        exit(EXIT_FAILURE);
+    }
 
     // TODO
     // 5) Mettez le socket en mode écoute (listen), en acceptant un maximum de MAX_CONNEXIONS en attente
     //      Vérifiez si l'opération a été effectuée avec succès, sinon quittez le processus en affichant l'erreur
     //      Voyez man listen pour plus de détails sur cette opération
-
+    if (listen(sock, MAX_CONNEXIONS) == -1) {
+        strerror(errno);
+        exit(EXIT_FAILURE);
+    }
 
     // Initialisation du socket UNIX terminée!
 
