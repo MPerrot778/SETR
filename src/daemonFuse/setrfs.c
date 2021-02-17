@@ -86,7 +86,7 @@ static int setrfs_getattr(const char *path, struct stat *stbuf)
 	// Si vous avez enregistré dans données dans setrfs_init, alors elles sont disponibles dans context->private_data
 	// Ici, voici un exemple où nous les utilisons pour donner le bon propriétaire au fichier (l'utilisateur courant)
 
-	memset(stuf, 0, sizeof(stbuf));
+	memset(stbuf, 0, sizeof(stbuf));
 	stbuf->st_uid = context->uid;		// On indique l'utilisateur actuel comme proprietaire
 	stbuf->st_gid = context->gid;		// Idem pour le groupe
 
@@ -230,6 +230,7 @@ static int setrfs_open(const char *path, struct fuse_file_info *fi)
 	struct cacheFichier *file = trouverFichier(path,cache);
 
 	static uint64_t fh_count = 3;
+	
 
 	if(file == NULL){
 		int sock = socket(AF_UNIX, SOCK_STREAM, 0);
@@ -249,7 +250,9 @@ static int setrfs_open(const char *path, struct fuse_file_info *fi)
 	    struct msgReq req;
 	    req.type = REQ_READ;
 	    req.sizePayload = sizeof(path);
-		int octetsTraites = envoyerMessage(sock, &req, path);
+		char *payload;
+		strcpy(payload,path);
+		int octetsTraites = envoyerMessage(sock, &req, payload);
 
 		// On attend et on recoit le fichier demande
 		struct msgRep rep;
@@ -280,14 +283,14 @@ static int setrfs_open(const char *path, struct fuse_file_info *fi)
 			}
 			pthread_mutex_unlock(&(cache->mutex));
 
-			struct dataFichier *temp;
+			struct cacheFichier *temp;
 
-			temp->nom = path;
 			temp->len = rep.sizePayload;
 			temp->offset = 0;
 			temp->next = NULL;
 			temp->prev = NULL;
-			memccpy(temp->data,dataRecv,rep.sizePayload);
+			strcpy(temp->nom,path);
+			memcpy(temp->data,dataRecv,rep.sizePayload);
 
 			insererFichier(temp,cache);
 			
@@ -295,11 +298,13 @@ static int setrfs_open(const char *path, struct fuse_file_info *fi)
 		}
 	}
 
+	incrementerCompteurFichier(path, cache, 1);
+	
 	fi->fh = fh_count;
 	
-	fh_count = (fh_count+1) % SIZE;
+	fh_count = (fh_count + 1) % SIZE;
 
-	if(fh_count<3) fh_count=3;
+	if(fh_count < 3) fh_count = 3;
 
 	return fi-> fh;
 }
@@ -332,6 +337,7 @@ static int setrfs_read(const char *path, char *buf, size_t size, off_t offset,
 	size_t len;
 
 	(void) fi;
+
 	if(file==NULL){
 		return -ENOENT;
 	}
@@ -343,7 +349,7 @@ static int setrfs_read(const char *path, char *buf, size_t size, off_t offset,
 			size = len - offset;
 		}
 
-		memccpy(buf,file->len+offset,size); 
+		memcpy(buf, file->data + offset, size); 
 		file->offset = offset+size;
 	}
 	else{
@@ -365,8 +371,14 @@ static int setrfs_release(const char *path, struct fuse_file_info *fi)
 	struct cacheData *cache = (struct cacheData*)context->private_data;
 	struct cacheFichier *file = trouverFichier(path,cache);
 
-	fi->fh = NULL;
-	retirerFichier(file,cache);
+	if(file->countOpen > 1){
+		file->countOpen--;
+	}
+	else{
+		file->countOpen--;
+		retirerFichier(file,cache);
+	}
+	
 	return 0;
 }
 
