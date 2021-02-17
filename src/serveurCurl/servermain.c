@@ -61,45 +61,44 @@ int main(int argc, char* argv[]){
 
     // TODO
     // Implémentez ici le code permettant d'attacher la fonction "gereSignal" au signal SIGUSR1
-    struct sigaction sig;
-    memset(&sig, '\0', sizeof(sig));
-    sig.sa_handler = &gererSignal;
-    if (sigaction(SIGUSR1, &sig, NULL) == -1) {
-        strerror(errno);
-        exit(EXIT_FAILURE);
-    }
+    // struct sigaction sig;
+    // memset(&sig, '\0', sizeof(sig));
+    // sig.sa_handler = &gererSignal;
+    // if (sigaction(SIGUSR1, &sig, NULL) == -1) {
+    //     strerror(errno);
+    //     exit(EXIT_FAILURE);
+    // }
+    
     
     memset(&addr, 0, sizeof(addr));                             // initialise addr a 0
     addr.sun_family = AF_UNIX;
     strncpy(addr.sun_path, path, sizeof(addr.sun_path) - 1);
     
-    int sock = socket(AF_UNIX, SOCK_STREAM, 0);  // creation du socket
+    int sock = socket(AF_UNIX, SOCK_STREAM, 0);                 // creation du socket
     if (sock == -1) {                           
-        strerror(errno);                         // affiche l'erreur
-        exit(EXIT_FAILURE);                      // quitter le processus
+        perror("socket() error: " + errno);                     // affiche l'erreur
+        exit(EXIT_FAILURE);                                     // quitter le processus
     }
 
     // fcntl() pour mettre le socket en mode non-bloquant
     // Vérifiez si l'opération a été effectuée avec succès, sinon quittez le processus en affichant l'erreur
     int flags = fcntl(sock, F_GETFL, 0);                   
     if (fcntl(sock, F_SETFL, flags | O_NONBLOCK) == -1) {
-        strerror(errno);
+        perror("Non blocking socket error: " + errno);
         exit(EXIT_FAILURE);
     }
     
     // bind sur le socket
     // Vérifiez si l'opération a été effectuée avec succès, sinon quittez le processus en affichant l'erreur
-    if (bind(sock, (struct sockaddr_on*) &addr, sizeof(addr)) == -1) {
-        strerror(errno);
+    if (bind(sock, (struct sockaddr_un*)&addr, sizeof(addr)) == -1) {
+        perror("bind() error: " + errno);
         exit(EXIT_FAILURE);
     }
 
-    // TODO
-    // 5) Mettez le socket en mode écoute (listen), en acceptant un maximum de MAX_CONNEXIONS en attente
-    //      Vérifiez si l'opération a été effectuée avec succès, sinon quittez le processus en affichant l'erreur
-    //      Voyez man listen pour plus de détails sur cette opération
+    // socket en mode écoute (listen), en acceptant un maximum de MAX_CONNEXIONS en attente
+    // Vérifiez si l'opération a été effectuée avec succès, sinon quittez le processus en affichant l'erreur
     if (listen(sock, MAX_CONNEXIONS) == -1) {
-        strerror(errno);
+        perror("listen() error: " + errno);
         exit(EXIT_FAILURE);
     }
 

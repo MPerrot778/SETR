@@ -12,8 +12,26 @@ int verifierNouvelleConnexion(struct requete reqList[], int maxlen, int socket){
     // Voyez man accept(2) pour plus de détails sur cette fonction
     //
     // Cette fonction doit retourner 0 si elle n'a pas acceptée de nouvelle connexion, ou 1 dans le cas contraire.
+    struct sockaddr_un req_addr;
+    socklen_t req_addr_size;
+    int req_fd;
+    int req = nouvelleRequete(reqList, maxlen);
 
-    // TODO
+    if(req < 0) {                                   // aucune entree n'est libre
+        return 0;   
+    } else {
+        req_addr_size = sizeof(req_addr);
+        req_fd = accept(socket, (struct sockaddr_un*)&req_addr, &req_addr_size);
+        if (req_fd == -1){
+            strerror(errno);
+            return 0;
+        } else {
+            reqList[req].fdSocket = req_fd;
+            reqList[req].status = REQ_STATUS_LISTEN;
+            return 1;
+        }
+
+    }
 }
    
 int traiterConnexions(struct requete reqList[], int maxlen){
@@ -87,9 +105,9 @@ int traiterConnexions(struct requete reqList[], int maxlen){
                         exit(EXIT_FAILURE);
                     }
 
-                    if (pid == 0) { /*processus enfant*/
+                    if (pid == 0) {                         // processus enfant
                         executerRequete(pipefd[1], buffer);
-                    } else { /*processus parent*/
+                    } else {                                // processus parent
                         reqList[i].pid = pid;
                         reqList[i].fdPipe = pipefd[0];
                         reqList[i].status = REQ_STATUS_INPROGRESS;
@@ -118,22 +136,67 @@ int traiterTelechargements(struct requete reqList[], int maxlen){
     //
     // Il vous est conseillé de vous inspirer de la fonction traiterConnexions(), puisque la procédure y est
     // très similaire. En détails, vous devez :
-    // 1) Faire la liste des descripteurs qui correspondent à des pipes ouverts
-    // 2) Utiliser select() pour déterminer si un de ceux-ci peut être lu
-    // 3) Si c'est le cas, vous devez lire son contenu. Rappelez-vous (voir les commentaires dans telecharger.h) que
-    //      le processus enfant écrit d'abord la taille du contenu téléchargé, puis le contenu téléchargé lui-même.
-    //      Cela vous permet de savoir combien d'octets vous devez récupérer au total. Attention : plusieurs lectures
-    //      successives peuvent être nécessaires pour récupérer tout le contenu du pipe!
-    // 4) Une fois que vous avez récupéré son contenu, modifiez le champ len de la structure de la requête pour
-    //      refléter la taille du fichier, ainsi que buffer pour y écrire un pointeur vers les données. Modifiez
-    //      également le statut à REQ_STATUS_READYTOSEND.
-    // 5) Finalement, terminer les opérations avec le processus enfant le rejoignant en attendant sa terminaison
-    //      (vous aurez besoin de la fonction waitpid()), puis fermer le descripteur correspondant l'extrémité
-    //      du pipe possédée par le parent.
-    //
+
+    struct MemoryStructCurl chunk;
+    chunk.memory = malloc(1);  /* will be grown as needed by the realloc above */
+    chunk.size = 0;    /* no data at this point */
+
+    // Faire la liste des descripteurs qui correspondent à des pipes ouverts
+    fd_set setSockets;
+    struct timeval tvS;
+    tvS.tv_sec = 0; tvS.tv_usec = SLEEP_TIME;
+    int nfdsSockets = 0;
+    FD_ZERO(&setSockets);
+
+    for(int i = 0; i < maxlen; i++){
+        if(reqList[i].status == REQ_STATUS_INPROGRESS){
+            FD_SET(reqList[i].fdSocket, &setSockets);
+            nfdsSockets = (nfdsSockets <= reqList[i].fdSocket) ? reqList[i].fdSocket+1 : nfdsSockets;
+        }
+    }
+
+    // Utiliser select() pour déterminer si un de ceux-ci peut être lu
+    if(nfdsSockets > 0){
+        int s = select(nfdsSockets, &setSockets, NULL, NULL, &tvS);                  
+        
+        // Si c'est le cas, vous devez lire son contenu. Rappelez-vous (voir les commentaires dans telecharger.h) que
+        // le processus enfant écrit d'abord la taille du contenu téléchargé, puis le contenu téléchargé lui-même.
+        // Cela vous permet de savoir combien d'octets vous devez récupérer au total. Attention : plusieurs lectures
+        // successives peuvent être nécessaires pour récupérer tout le contenu du pipe!
+        if(s > 0){
+            for(int i = 0; i < maxlen; i++){
+                if(reqList[i].status == REQ_STATUS_INPROGRESS && FD_ISSET(reqList[i].fdSocket, &setSockets)){
+                    unsigned int c, readBytes = 0;
+                    if (read(reqList[i].fdPipe, (char*)&(chunk.size), sizeof(size_t)) == -1) {
+                        perror("read() error");
+                        exit(EXIT_FAILURE);
+                    }
+                    c = read(reqList[i].fdPipe, (char*)&(chunk.size), sizeof(size_t));
+                    if (c == 0) return 0;   // empty pipe - chunk.size = 0
+
+                    while(readBytes < chunk.size){
+                        c = read(reqList[i].fdPipe, chunk.memory + readBytes, chunk.size - readBytes);
+                        readBytes += c;
+                    }
+                }
+                // Une fois que vous avez récupéré son contenu, modifiez le champ len de la structure de la requête pour
+                // refléter la taille du fichier, ainsi que buffer pour y écrire un pointeur vers les données. Modifiez
+                // également le statut à REQ_STATUS_READYTOSEND.
+                reqList[i].len = chunk.size;
+                reqList[i].status = REQ_STATUS_READYTOSEND;
+                strncpy(reqList[i].buf, chunk.memory, chunk.size);
+
+                // Finalement, terminer les opérations avec le processus enfant le rejoignant en attendant sa terminaison
+                // (vous aurez besoin de la fonction waitpid()), puis fermer le descripteur correspondant l'extrémité
+                // du pipe possédée par le parent.
+                waitpid(reqList[i].pid, 0,0);
+                close(reqList[i].fdPipe);
+                return 1;
+            }
+        }        
+    }    
     // S'il n'y a aucun processus enfant lancé, ou qu'aucun processus n'a écrit de données, cette fonction
     // peut retourner sans aucun traitement.
     // Cette fonction doit retourner 0 si elle n'a lu aucune donnée supplémentaire, ou un nombre > 0 si c'est le cas.
-
-    // TODO
+    return 0;
 }
