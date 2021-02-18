@@ -108,7 +108,8 @@ int traiterConnexions(struct requete reqList[], int maxlen){
                     if (pid == 0) {                         // processus enfant
                         close(pipefd[0]);
                         executerRequete(pipefd[1], buffer);
-                    } else {                                // processus parent
+                        exit(0);
+                    } else {                           // processus parent
                         close(pipefd[1]);
                         reqList[i].pid = pid;
                         reqList[i].fdPipe = pipefd[0];
@@ -141,6 +142,7 @@ int traiterTelechargements(struct requete reqList[], int maxlen){
 
     struct MemoryStructCurl chunk;
     chunk.memory = malloc(1);  /* will be grown as needed by the realloc above */
+
     chunk.size = 0;    /* no data at this point */
 
     // Faire la liste des descripteurs qui correspondent à des pipes ouverts
@@ -156,10 +158,9 @@ int traiterTelechargements(struct requete reqList[], int maxlen){
             nfdsPipes = (nfdsPipes <= reqList[i].fdPipe) ? reqList[i].fdPipe+1 : nfdsPipes;
         }
     }
-
     // Utiliser select() pour déterminer si un de ceux-ci peut être lu
     if(nfdsPipes > 0){
-        int s = select(nfdsPipes, &setPipes, NULL, NULL, &tvS);                  
+        int s = select(nfdsPipes, &setPipes, NULL, NULL, &tvS);                
         // Si c'est le cas, vous devez lire son contenu. Rappelez-vous (voir les commentaires dans telecharger.h) que
         // le processus enfant écrit d'abord la taille du contenu téléchargé, puis le contenu téléchargé lui-même.
         // Cela vous permet de savoir combien d'octets vous devez récupérer au total. Attention : plusieurs lectures
@@ -169,12 +170,13 @@ int traiterTelechargements(struct requete reqList[], int maxlen){
                 if(reqList[i].status == REQ_STATUS_INPROGRESS && FD_ISSET(reqList[i].fdPipe, &setPipes)){
                     int c, readBytes = 0;
                     c = read(reqList[i].fdPipe, (char*)&(chunk.size), sizeof(size_t));
+                    chunk.memory = realloc(chunk.memory,chunk.size); 
                     if ( c == -1) {
                         perror("read() error");
                         exit(EXIT_FAILURE);
                     }
                     if (c == 0){
-                    printf("chunk size: %d\n",chunk.size);        
+                       
                     return 0;   // empty pipe - chunk.size = 0
 
                     } 
@@ -193,9 +195,9 @@ int traiterTelechargements(struct requete reqList[], int maxlen){
                 // Finalement, terminer les opérations avec le processus enfant le rejoignant en attendant sa terminaison
                 // (vous aurez besoin de la fonction waitpid()), puis fermer le descripteur correspondant l'extrémité
                 // du pipe possédée par le parent.
-                waitpid(reqList[i].pid, 0,0);
+                waitpid(reqList[i].pid, NULL, 0);
                 close(reqList[i].fdPipe);
-                printf("telechargement termine \n");
+                
                 return 1;
             }
         }        

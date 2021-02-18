@@ -6,6 +6,40 @@
 
 #IncludeRegexTransform: 
 
+/home/mikael/projets/SETR/src/serveurCurl/actions.c
+actions.h
+/home/mikael/projets/SETR/src/serveurCurl/actions.h
+
+/home/mikael/projets/SETR/src/serveurCurl/actions.h
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+errno.h
+-
+sys/types.h
+-
+sys/wait.h
+-
+sys/time.h
+-
+unistd.h
+-
+sys/socket.h
+-
+sys/un.h
+-
+fcntl.h
+-
+communications.h
+/home/mikael/projets/SETR/src/serveurCurl/communications.h
+requete.h
+/home/mikael/projets/SETR/src/serveurCurl/requete.h
+telechargeur.h
+/home/mikael/projets/SETR/src/serveurCurl/telechargeur.h
+
 /home/mikael/projets/SETR/src/serveurCurl/communications.h
 stdio.h
 -
@@ -18,9 +52,15 @@ sys/socket.h
 unistd.h
 -
 
-/home/mikael/projets/SETR/src/serveurCurl/telechargeur.c
-telechargeur.h
-/home/mikael/projets/SETR/src/serveurCurl/telechargeur.h
+/home/mikael/projets/SETR/src/serveurCurl/requete.h
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+communications.h
+/home/mikael/projets/SETR/src/serveurCurl/communications.h
 
 /home/mikael/projets/SETR/src/serveurCurl/telechargeur.h
 stdio.h

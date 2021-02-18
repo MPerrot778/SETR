@@ -109,18 +109,18 @@ int main(int argc, char* argv[]){
     while(1){
         // On vérifie si de nouveaux clients attendent pour se connecter
         tacheRealisee = verifierNouvelleConnexion(reqList, MAX_CONNEXIONS, sock);
-
+        printf("verif\n");
         // On teste si un client vient de nous envoyer une requête
         // Si oui, on la traite
         tacheRealisee += traiterConnexions(reqList, MAX_CONNEXIONS);
-
+        printf("Connexion\n");
         // On teste si un de nos processus enfants a terminé son téléchargement
         // Dans ce cas, on traite le résultat
         tacheRealisee += traiterTelechargements(reqList, MAX_CONNEXIONS);
-
+        printf("Telechargement\n");
         // Si on a des données à envoyer au client, on le fait
         tacheRealisee += envoyerReponses(reqList, MAX_CONNEXIONS);
-
+        printf("envoie\n");
         // Si on n'a pas attendu dans un select ou effectué une tâche, on ajoute
         // un petit delai ici pour éviter d'utiliser 100% du CPU inutilement
         if(tacheRealisee == 0)
