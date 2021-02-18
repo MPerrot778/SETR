@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/mikael/projets/SETR/src/serveurCurl/communications.h
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+sys/socket.h
+-
+unistd.h
+-
+
+/home/mikael/projets/SETR/src/serveurCurl/telechargeur.c
+telechargeur.h
+/home/mikael/projets/SETR/src/serveurCurl/telechargeur.h
+
+/home/mikael/projets/SETR/src/serveurCurl/telechargeur.h
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+curl/curl.h
+-
+communications.h
+/home/mikael/projets/SETR/src/serveurCurl/communications.h
+

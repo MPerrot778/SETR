@@ -1,0 +1,2 @@
+/usr/bin/ar qc libSETR.a CMakeFiles/SETR.dir/SETR.cpp.o
+/usr/bin/ranlib libSETR.a

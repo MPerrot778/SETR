@@ -75,7 +75,7 @@ int main(int argc, char* argv[]){
     strncpy(addr.sun_path, path, sizeof(addr.sun_path) - 1);
     
     int sock = socket(AF_UNIX, SOCK_STREAM, 0);                 // creation du socket
-    if (sock == -1) {                           
+    if (sock == 0) {                           
         perror("socket() error: " + errno);                     // affiche l'erreur
         exit(EXIT_FAILURE);                                     // quitter le processus
     }
@@ -90,7 +90,7 @@ int main(int argc, char* argv[]){
     
     // bind sur le socket
     // Vérifiez si l'opération a été effectuée avec succès, sinon quittez le processus en affichant l'erreur
-    if (bind(sock, (struct sockaddr_un*)&addr, sizeof(addr)) == -1) {
+    if (bind(sock, (struct sockaddr*)&addr, sizeof(addr)) == -1) {
         perror("bind() error: " + errno);
         exit(EXIT_FAILURE);
     }

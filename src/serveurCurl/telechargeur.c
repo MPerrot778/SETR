@@ -1,7 +1,7 @@
 #include "telechargeur.h"
 
 // Adresse du serveur
-const char baseUrl[] = "http://wcours.gel.ulaval.ca/2020/h/GIF3004/default/labo2/";
+const char baseUrl[] = "https://setr-ulaval.github.io/labo2-fichiers/";
 
 
 // Fonction utilisée à l'interne, vous n'avez pas à l'utiliser directement
@@ -109,7 +109,7 @@ void executerRequete(int pipeFd, char* reqBuffer){
              writtenBytes += c;
          }
     }
-
+    
     /* cleanup curl stuff */
     curl_easy_cleanup(curl_handle);
 

@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/mikael/projets/SETR/build",
+  "command": "/usr/bin/c++   -g -o CMakeFiles/SETR.dir/SETR.cpp.o -c /home/mikael/projets/SETR/SETR.cpp",
+  "file": "/home/mikael/projets/SETR/SETR.cpp"
+}
+]

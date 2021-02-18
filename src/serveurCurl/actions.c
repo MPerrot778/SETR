@@ -21,7 +21,7 @@ int verifierNouvelleConnexion(struct requete reqList[], int maxlen, int socket){
         return 0;   
     } else {
         req_addr_size = sizeof(req_addr);
-        req_fd = accept(socket, (struct sockaddr_un*)&req_addr, &req_addr_size);
+        req_fd = accept(socket, (struct sockaddr *)&req_addr, &req_addr_size);
         if (req_fd == -1){
             strerror(errno);
             return 0;
@@ -106,8 +106,10 @@ int traiterConnexions(struct requete reqList[], int maxlen){
                     }
 
                     if (pid == 0) {                         // processus enfant
+                        close(pipefd[0]);
                         executerRequete(pipefd[1], buffer);
                     } else {                                // processus parent
+                        close(pipefd[1]);
                         reqList[i].pid = pid;
                         reqList[i].fdPipe = pipefd[0];
                         reqList[i].status = REQ_STATUS_INPROGRESS;
@@ -142,38 +144,40 @@ int traiterTelechargements(struct requete reqList[], int maxlen){
     chunk.size = 0;    /* no data at this point */
 
     // Faire la liste des descripteurs qui correspondent à des pipes ouverts
-    fd_set setSockets;
+    fd_set setPipes;
     struct timeval tvS;
     tvS.tv_sec = 0; tvS.tv_usec = SLEEP_TIME;
-    int nfdsSockets = 0;
-    FD_ZERO(&setSockets);
+    int nfdsPipes = 0;
+    FD_ZERO(&setPipes);
 
     for(int i = 0; i < maxlen; i++){
         if(reqList[i].status == REQ_STATUS_INPROGRESS){
-            FD_SET(reqList[i].fdSocket, &setSockets);
-            nfdsSockets = (nfdsSockets <= reqList[i].fdSocket) ? reqList[i].fdSocket+1 : nfdsSockets;
+            FD_SET(reqList[i].fdPipe, &setPipes);
+            nfdsPipes = (nfdsPipes <= reqList[i].fdPipe) ? reqList[i].fdPipe+1 : nfdsPipes;
         }
     }
 
     // Utiliser select() pour déterminer si un de ceux-ci peut être lu
-    if(nfdsSockets > 0){
-        int s = select(nfdsSockets, &setSockets, NULL, NULL, &tvS);                  
-        
+    if(nfdsPipes > 0){
+        int s = select(nfdsPipes, &setPipes, NULL, NULL, &tvS);                  
         // Si c'est le cas, vous devez lire son contenu. Rappelez-vous (voir les commentaires dans telecharger.h) que
         // le processus enfant écrit d'abord la taille du contenu téléchargé, puis le contenu téléchargé lui-même.
         // Cela vous permet de savoir combien d'octets vous devez récupérer au total. Attention : plusieurs lectures
         // successives peuvent être nécessaires pour récupérer tout le contenu du pipe!
         if(s > 0){
             for(int i = 0; i < maxlen; i++){
-                if(reqList[i].status == REQ_STATUS_INPROGRESS && FD_ISSET(reqList[i].fdSocket, &setSockets)){
-                    unsigned int c, readBytes = 0;
-                    if (read(reqList[i].fdPipe, (char*)&(chunk.size), sizeof(size_t)) == -1) {
+                if(reqList[i].status == REQ_STATUS_INPROGRESS && FD_ISSET(reqList[i].fdPipe, &setPipes)){
+                    int c, readBytes = 0;
+                    c = read(reqList[i].fdPipe, (char*)&(chunk.size), sizeof(size_t));
+                    if ( c == -1) {
                         perror("read() error");
                         exit(EXIT_FAILURE);
                     }
-                    c = read(reqList[i].fdPipe, (char*)&(chunk.size), sizeof(size_t));
-                    if (c == 0) return 0;   // empty pipe - chunk.size = 0
+                    if (c == 0){
+                    printf("chunk size: %d\n",chunk.size);        
+                    return 0;   // empty pipe - chunk.size = 0
 
+                    } 
                     while(readBytes < chunk.size){
                         c = read(reqList[i].fdPipe, chunk.memory + readBytes, chunk.size - readBytes);
                         readBytes += c;
@@ -184,13 +188,14 @@ int traiterTelechargements(struct requete reqList[], int maxlen){
                 // également le statut à REQ_STATUS_READYTOSEND.
                 reqList[i].len = chunk.size;
                 reqList[i].status = REQ_STATUS_READYTOSEND;
-                strncpy(reqList[i].buf, chunk.memory, chunk.size);
-
+                reqList[i].buf = chunk.memory;
+                
                 // Finalement, terminer les opérations avec le processus enfant le rejoignant en attendant sa terminaison
                 // (vous aurez besoin de la fonction waitpid()), puis fermer le descripteur correspondant l'extrémité
                 // du pipe possédée par le parent.
                 waitpid(reqList[i].pid, 0,0);
                 close(reqList[i].fdPipe);
+                printf("telechargement termine \n");
                 return 1;
             }
         }        
