@@ -1,0 +1,95 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.0"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "SETR_TP3",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "compositeur::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-compositeur-Debug-cb0ce717ab6c415e608a.json",
+					"name" : "compositeur",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "convertisseur::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-convertisseur-Debug-6ace4d3107e58b4d4f35.json",
+					"name" : "convertisseur",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "decodeur::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-decodeur-Debug-324d888110c5f1a937c7.json",
+					"name" : "decodeur",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "filtreur::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-filtreur-Debug-0604925772ad65ba1de5.json",
+					"name" : "filtreur",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "redimensionneur::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-redimensionneur-Debug-4760a18eb8afcef478f0.json",
+					"name" : "redimensionneur",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/mikael/projets/SETR/Laboratoire_3/src/build",
+		"source" : "/home/mikael/projets/SETR/Laboratoire_3/src"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 2
+	}
+}

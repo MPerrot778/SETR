@@ -1,0 +1,426 @@
+The target system is: Linux - 4.19 - arm
+The host system is: Linux - 5.8.0-44-generic - x86_64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/bin/arm-raspbian-linux-gnueabihf-gcc 
+Build flags: -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/opt/vc/lib;-Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf;-Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf;-Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/local/lib
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+
+The C compiler identification is GNU, found in "/home/mikael/projets/SETR/Laboratoire_3/src/build/CMakeFiles/3.19.4/CompilerIdC/a.out"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/bin/arm-raspbian-linux-gnueabihf-g++ 
+Build flags: -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/opt/vc/lib;-Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf;-Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf;-Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/local/lib
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+
+The CXX compiler identification is GNU, found in "/home/mikael/projets/SETR/Laboratoire_3/src/build/CMakeFiles/3.19.4/CompilerIdCXX/a.out"
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: /home/mikael/projets/SETR/Laboratoire_3/src/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_b510f/fast && /usr/bin/make  -f CMakeFiles/cmTC_b510f.dir/build.make CMakeFiles/cmTC_b510f.dir/build
+make[1]: Entering directory '/home/mikael/projets/SETR/Laboratoire_3/src/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_b510f.dir/CMakeCCompilerABI.c.o
+/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/bin/arm-raspbian-linux-gnueabihf-gcc --sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot   -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/opt/vc/lib -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/local/lib    -v -o CMakeFiles/cmTC_b510f.dir/CMakeCCompilerABI.c.o -c /usr/local/share/cmake-3.19/Modules/CMakeCCompilerABI.c
+Using built-in specs.
+COLLECT_GCC=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/bin/arm-raspbian-linux-gnueabihf-gcc
+Target: arm-raspbian-linux-gnueabihf
+Configured with: /home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/src/gcc/configure --build=x86_64-build_pc-linux-gnu --host=x86_64-build_pc-linux-gnu --target=arm-raspbian-linux-gnueabihf --prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf --exec_prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf --with-sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot --enable-languages=c,c++ --with-pkgversion='crosstool-NG 1.24.0.261_30316cd' --enable-__cxa_atexit --enable-libmudflap --enable-libgomp --enable-libssp --enable-libquadmath --enable-libquadmath-support --enable-libsanitizer --disable-libmpx --with-gmp=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-mpfr=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-mpc=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-isl=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --enable-lto --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --enable-threads=posix --disable-plugin --disable-nls --enable-multiarch --with-local-prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot --enable-long-long --with-arch=armv6 --with-float=hard --with-fpu=vfp --enable-libstdcxx-debug --enable-libstdcxx-time=yes --enable-version-specific-runtime-libs
+Thread model: posix
+gcc version 8.4.0 (crosstool-NG 1.24.0.261_30316cd) 
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b510f.dir/CMakeCCompilerABI.c.o' '-c'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp'
+ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/cc1 -quiet -v -imultilib . -imultiarch arm-linux-gnueabihf -isysroot /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot /usr/local/share/cmake-3.19/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mfloat-abi=hard -mfpu=vfp -mtls-dialect=gnu -marm -march=armv6+fp -auxbase-strip CMakeFiles/cmTC_b510f.dir/CMakeCCompilerABI.c.o -version -o /tmp/cc5Vlwr3.s
+GNU C17 (crosstool-NG 1.24.0.261_30316cd) version 8.4.0 (arm-raspbian-linux-gnueabihf)
+	compiled by GNU C version 9.3.0, GMP version 6.1.2, MPFR version 3.1.6, MPC version 1.0.3, isl version isl-0.18-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring nonexistent directory "/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/include/arm-linux-gnueabihf"
+ignoring nonexistent directory "/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/include"
+ignoring nonexistent directory "/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/../../../../arm-raspbian-linux-gnueabihf/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include
+ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include-fixed
+ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf
+ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include
+End of search list.
+GNU C17 (crosstool-NG 1.24.0.261_30316cd) version 8.4.0 (arm-raspbian-linux-gnueabihf)
+	compiled by GNU C version 9.3.0, GMP version 6.1.2, MPFR version 3.1.6, MPC version 1.0.3, isl version isl-0.18-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: 15af1ba26915aecd75e9961e0ac6afc1
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b510f.dir/CMakeCCompilerABI.c.o' '-c'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp'
+ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/../../../../arm-raspbian-linux-gnueabihf/bin/as -v -march=armv6 -mfloat-abi=hard -mfpu=vfp -meabi=5 -o CMakeFiles/cmTC_b510f.dir/CMakeCCompilerABI.c.o /tmp/cc5Vlwr3.s
+GNU assembler version 2.28.1 (arm-raspbian-linux-gnueabihf) using BFD version (crosstool-NG 1.24.0.261_30316cd) 2.28.1
+COMPILER_PATH=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/../../../../arm-raspbian-linux-gnueabihf/bin/
+LIBRARY_PATH=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b510f.dir/CMakeCCompilerABI.c.o' '-c'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp'
+Linking C executable cmTC_b510f
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b510f.dir/link.txt --verbose=1
+/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/bin/arm-raspbian-linux-gnueabihf-gcc --sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/opt/vc/lib -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/local/lib   -v -rdynamic CMakeFiles/cmTC_b510f.dir/CMakeCCompilerABI.c.o -o cmTC_b510f 
+Using built-in specs.
+COLLECT_GCC=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/bin/arm-raspbian-linux-gnueabihf-gcc
+COLLECT_LTO_WRAPPER=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/lto-wrapper
+Target: arm-raspbian-linux-gnueabihf
+Configured with: /home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/src/gcc/configure --build=x86_64-build_pc-linux-gnu --host=x86_64-build_pc-linux-gnu --target=arm-raspbian-linux-gnueabihf --prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf --exec_prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf --with-sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot --enable-languages=c,c++ --with-pkgversion='crosstool-NG 1.24.0.261_30316cd' --enable-__cxa_atexit --enable-libmudflap --enable-libgomp --enable-libssp --enable-libquadmath --enable-libquadmath-support --enable-libsanitizer --disable-libmpx --with-gmp=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-mpfr=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-mpc=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-isl=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --enable-lto --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --enable-threads=posix --disable-plugin --disable-nls --enable-multiarch --with-local-prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot --enable-long-long --with-arch=armv6 --with-float=hard --with-fpu=vfp --enable-libstdcxx-debug --enable-libstdcxx-time=yes --enable-version-specific-runtime-libs
+Thread model: posix
+gcc version 8.4.0 (crosstool-NG 1.24.0.261_30316cd) 
+COMPILER_PATH=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/../../../../arm-raspbian-linux-gnueabihf/bin/
+LIBRARY_PATH=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_b510f'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp'
+ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/collect2 -plugin /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/liblto_plugin.so -plugin-opt=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccIhZYlw.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot --eh-frame-hdr -export-dynamic -dynamic-linker /lib/ld-linux-armhf.so.3 -X -m armelf_linux_eabi -o cmTC_b510f /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/crt1.o /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/crti.o /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/crtbegin.o -L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0 -L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf -L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib -L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf -L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/opt/vc/lib -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/local/lib CMakeFiles/cmTC_b510f.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/crtend.o /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_b510f'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp'
+make[1]: Leaving directory '/home/mikael/projets/SETR/Laboratoire_3/src/build/CMakeFiles/CMakeTmp'
+
+
+
+Parsed C implicit include dir info from above output: rv=done
+  found start of include info
+  found start of implicit include info
+    add: [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include]
+    add: [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include-fixed]
+    add: [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf]
+    add: [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include]
+  end of search list found
+  collapse include dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include] ==> [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include]
+  collapse include dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include-fixed] ==> [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include-fixed]
+  collapse include dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf] ==> [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf]
+  collapse include dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include] ==> [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include]
+  implicit include dirs: [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include;/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include-fixed;/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf;/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include]
+
+
+Parsed C implicit link information from above output:
+  link line regex: [^( *|.*[/\])(arm-raspbian-linux-gnueabihf-ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /home/mikael/projets/SETR/Laboratoire_3/src/build/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command(s):/usr/bin/make cmTC_b510f/fast && /usr/bin/make  -f CMakeFiles/cmTC_b510f.dir/build.make CMakeFiles/cmTC_b510f.dir/build]
+  ignore line: [make[1]: Entering directory '/home/mikael/projets/SETR/Laboratoire_3/src/build/CMakeFiles/CMakeTmp']
+  ignore line: [Building C object CMakeFiles/cmTC_b510f.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/bin/arm-raspbian-linux-gnueabihf-gcc --sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot   -Wl -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/opt/vc/lib -Wl -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf -Wl -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf -Wl -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/local/lib    -v -o CMakeFiles/cmTC_b510f.dir/CMakeCCompilerABI.c.o -c /usr/local/share/cmake-3.19/Modules/CMakeCCompilerABI.c]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/bin/arm-raspbian-linux-gnueabihf-gcc]
+  ignore line: [Target: arm-raspbian-linux-gnueabihf]
+  ignore line: [Configured with: /home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/src/gcc/configure --build=x86_64-build_pc-linux-gnu --host=x86_64-build_pc-linux-gnu --target=arm-raspbian-linux-gnueabihf --prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf --exec_prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf --with-sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot --enable-languages=c c++ --with-pkgversion='crosstool-NG 1.24.0.261_30316cd' --enable-__cxa_atexit --enable-libmudflap --enable-libgomp --enable-libssp --enable-libquadmath --enable-libquadmath-support --enable-libsanitizer --disable-libmpx --with-gmp=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-mpfr=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-mpc=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-isl=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --enable-lto --with-host-libstdcxx='-static-libgcc -Wl -Bstatic -lstdc++ -Bdynamic -lm' --enable-threads=posix --disable-plugin --disable-nls --enable-multiarch --with-local-prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot --enable-long-long --with-arch=armv6 --with-float=hard --with-fpu=vfp --enable-libstdcxx-debug --enable-libstdcxx-time=yes --enable-version-specific-runtime-libs]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 8.4.0 (crosstool-NG 1.24.0.261_30316cd) ]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b510f.dir/CMakeCCompilerABI.c.o' '-c'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp']
+  ignore line: [ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/cc1 -quiet -v -imultilib . -imultiarch arm-linux-gnueabihf -isysroot /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot /usr/local/share/cmake-3.19/Modules/CMakeCCompilerABI.c -quiet -dumpbase CMakeCCompilerABI.c -mfloat-abi=hard -mfpu=vfp -mtls-dialect=gnu -marm -march=armv6+fp -auxbase-strip CMakeFiles/cmTC_b510f.dir/CMakeCCompilerABI.c.o -version -o /tmp/cc5Vlwr3.s]
+  ignore line: [GNU C17 (crosstool-NG 1.24.0.261_30316cd) version 8.4.0 (arm-raspbian-linux-gnueabihf)]
+  ignore line: [	compiled by GNU C version 9.3.0  GMP version 6.1.2  MPFR version 3.1.6  MPC version 1.0.3  isl version isl-0.18-GMP]
+  ignore line: []
+  ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+  ignore line: [ignoring nonexistent directory "/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/include/arm-linux-gnueabihf"]
+  ignore line: [ignoring nonexistent directory "/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/include"]
+  ignore line: [ignoring nonexistent directory "/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/../../../../arm-raspbian-linux-gnueabihf/include"]
+  ignore line: [#include "..." search starts here:]
+  ignore line: [#include <...> search starts here:]
+  ignore line: [ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include]
+  ignore line: [ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include-fixed]
+  ignore line: [ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf]
+  ignore line: [ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include]
+  ignore line: [End of search list.]
+  ignore line: [GNU C17 (crosstool-NG 1.24.0.261_30316cd) version 8.4.0 (arm-raspbian-linux-gnueabihf)]
+  ignore line: [	compiled by GNU C version 9.3.0  GMP version 6.1.2  MPFR version 3.1.6  MPC version 1.0.3  isl version isl-0.18-GMP]
+  ignore line: []
+  ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+  ignore line: [Compiler executable checksum: 15af1ba26915aecd75e9961e0ac6afc1]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b510f.dir/CMakeCCompilerABI.c.o' '-c'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp']
+  ignore line: [ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/../../../../arm-raspbian-linux-gnueabihf/bin/as -v -march=armv6 -mfloat-abi=hard -mfpu=vfp -meabi=5 -o CMakeFiles/cmTC_b510f.dir/CMakeCCompilerABI.c.o /tmp/cc5Vlwr3.s]
+  ignore line: [GNU assembler version 2.28.1 (arm-raspbian-linux-gnueabihf) using BFD version (crosstool-NG 1.24.0.261_30316cd) 2.28.1]
+  ignore line: [COMPILER_PATH=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/../../../../arm-raspbian-linux-gnueabihf/bin/]
+  ignore line: [LIBRARY_PATH=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_b510f.dir/CMakeCCompilerABI.c.o' '-c'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp']
+  ignore line: [Linking C executable cmTC_b510f]
+  ignore line: [/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b510f.dir/link.txt --verbose=1]
+  ignore line: [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/bin/arm-raspbian-linux-gnueabihf-gcc --sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot -Wl -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/opt/vc/lib -Wl -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf -Wl -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf -Wl -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/local/lib   -v -rdynamic CMakeFiles/cmTC_b510f.dir/CMakeCCompilerABI.c.o -o cmTC_b510f ]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/bin/arm-raspbian-linux-gnueabihf-gcc]
+  ignore line: [COLLECT_LTO_WRAPPER=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/lto-wrapper]
+  ignore line: [Target: arm-raspbian-linux-gnueabihf]
+  ignore line: [Configured with: /home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/src/gcc/configure --build=x86_64-build_pc-linux-gnu --host=x86_64-build_pc-linux-gnu --target=arm-raspbian-linux-gnueabihf --prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf --exec_prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf --with-sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot --enable-languages=c c++ --with-pkgversion='crosstool-NG 1.24.0.261_30316cd' --enable-__cxa_atexit --enable-libmudflap --enable-libgomp --enable-libssp --enable-libquadmath --enable-libquadmath-support --enable-libsanitizer --disable-libmpx --with-gmp=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-mpfr=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-mpc=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-isl=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --enable-lto --with-host-libstdcxx='-static-libgcc -Wl -Bstatic -lstdc++ -Bdynamic -lm' --enable-threads=posix --disable-plugin --disable-nls --enable-multiarch --with-local-prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot --enable-long-long --with-arch=armv6 --with-float=hard --with-fpu=vfp --enable-libstdcxx-debug --enable-libstdcxx-time=yes --enable-version-specific-runtime-libs]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 8.4.0 (crosstool-NG 1.24.0.261_30316cd) ]
+  ignore line: [COMPILER_PATH=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/../../../../arm-raspbian-linux-gnueabihf/bin/]
+  ignore line: [LIBRARY_PATH=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_b510f'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp']
+  link line: [ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/collect2 -plugin /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/liblto_plugin.so -plugin-opt=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/lto-wrapper -plugin-opt=-fresolution=/tmp/ccIhZYlw.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot --eh-frame-hdr -export-dynamic -dynamic-linker /lib/ld-linux-armhf.so.3 -X -m armelf_linux_eabi -o cmTC_b510f /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/crt1.o /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/crti.o /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/crtbegin.o -L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0 -L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf -L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib -L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf -L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/opt/vc/lib -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/local/lib CMakeFiles/cmTC_b510f.dir/CMakeCCompilerABI.c.o -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/crtend.o /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/crtn.o]
+    arg [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/collect2] ==> ignore
+    arg [-plugin] ==> ignore
+    arg [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/liblto_plugin.so] ==> ignore
+    arg [-plugin-opt=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/lto-wrapper] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccIhZYlw.res] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [-plugin-opt=-pass-through=-lc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [--sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-export-dynamic] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/lib/ld-linux-armhf.so.3] ==> ignore
+    arg [-X] ==> ignore
+    arg [-m] ==> ignore
+    arg [armelf_linux_eabi] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_b510f] ==> ignore
+    arg [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/crt1.o] ==> ignore
+    arg [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/crti.o] ==> ignore
+    arg [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/crtbegin.o] ==> ignore
+    arg [-L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0] ==> dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0]
+    arg [-L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf] ==> dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf]
+    arg [-L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib] ==> dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib]
+    arg [-L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf] ==> dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf]
+    arg [-L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib] ==> dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib]
+    arg [-rpath-link] ==> ignore
+    arg [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/opt/vc/lib] ==> ignore
+    arg [-rpath-link] ==> ignore
+    arg [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf] ==> ignore
+    arg [-rpath-link] ==> ignore
+    arg [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf] ==> ignore
+    arg [-rpath-link] ==> ignore
+    arg [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/local/lib] ==> ignore
+    arg [CMakeFiles/cmTC_b510f.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [-lgcc] ==> lib [gcc]
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--no-as-needed] ==> ignore
+    arg [-lc] ==> lib [c]
+    arg [-lgcc] ==> lib [gcc]
+    arg [--as-needed] ==> ignore
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [--no-as-needed] ==> ignore
+    arg [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/crtend.o] ==> ignore
+    arg [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/crtn.o] ==> ignore
+  collapse library dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0] ==> [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0]
+  collapse library dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf] ==> [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf]
+  collapse library dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib] ==> [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib]
+  collapse library dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf] ==> [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf]
+  collapse library dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib] ==> [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib]
+  implicit libs: [gcc;gcc_s;c;gcc;gcc_s]
+  implicit dirs: [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0;/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf;/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib;/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf;/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib]
+  implicit fwks: []
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: /home/mikael/projets/SETR/Laboratoire_3/src/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_20c12/fast && /usr/bin/make  -f CMakeFiles/cmTC_20c12.dir/build.make CMakeFiles/cmTC_20c12.dir/build
+make[1]: Entering directory '/home/mikael/projets/SETR/Laboratoire_3/src/build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_20c12.dir/CMakeCXXCompilerABI.cpp.o
+/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/bin/arm-raspbian-linux-gnueabihf-g++ --sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot   -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/opt/vc/lib -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/local/lib    -v -o CMakeFiles/cmTC_20c12.dir/CMakeCXXCompilerABI.cpp.o -c /usr/local/share/cmake-3.19/Modules/CMakeCXXCompilerABI.cpp
+Using built-in specs.
+COLLECT_GCC=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/bin/arm-raspbian-linux-gnueabihf-g++
+Target: arm-raspbian-linux-gnueabihf
+Configured with: /home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/src/gcc/configure --build=x86_64-build_pc-linux-gnu --host=x86_64-build_pc-linux-gnu --target=arm-raspbian-linux-gnueabihf --prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf --exec_prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf --with-sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot --enable-languages=c,c++ --with-pkgversion='crosstool-NG 1.24.0.261_30316cd' --enable-__cxa_atexit --enable-libmudflap --enable-libgomp --enable-libssp --enable-libquadmath --enable-libquadmath-support --enable-libsanitizer --disable-libmpx --with-gmp=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-mpfr=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-mpc=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-isl=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --enable-lto --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --enable-threads=posix --disable-plugin --disable-nls --enable-multiarch --with-local-prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot --enable-long-long --with-arch=armv6 --with-float=hard --with-fpu=vfp --enable-libstdcxx-debug --enable-libstdcxx-time=yes --enable-version-specific-runtime-libs
+Thread model: posix
+gcc version 8.4.0 (crosstool-NG 1.24.0.261_30316cd) 
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_20c12.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp'
+ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/cc1plus -quiet -v -imultilib . -imultiarch arm-linux-gnueabihf -isysroot /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot -D_GNU_SOURCE /usr/local/share/cmake-3.19/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -mfloat-abi=hard -mfpu=vfp -mtls-dialect=gnu -marm -march=armv6+fp -auxbase-strip CMakeFiles/cmTC_20c12.dir/CMakeCXXCompilerABI.cpp.o -version -o /tmp/ccI3NkC1.s
+GNU C++14 (crosstool-NG 1.24.0.261_30316cd) version 8.4.0 (arm-raspbian-linux-gnueabihf)
+	compiled by GNU C version 9.3.0, GMP version 6.1.2, MPFR version 3.1.6, MPC version 1.0.3, isl version isl-0.18-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring nonexistent directory "/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/include/arm-linux-gnueabihf"
+ignoring nonexistent directory "/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/include"
+ignoring nonexistent directory "/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/../../../../arm-raspbian-linux-gnueabihf/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include/c++
+ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include/c++/arm-raspbian-linux-gnueabihf/.
+ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include/c++/backward
+ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include
+ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include-fixed
+ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf
+ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include
+End of search list.
+GNU C++14 (crosstool-NG 1.24.0.261_30316cd) version 8.4.0 (arm-raspbian-linux-gnueabihf)
+	compiled by GNU C version 9.3.0, GMP version 6.1.2, MPFR version 3.1.6, MPC version 1.0.3, isl version isl-0.18-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: 1ed624cb0b3a85c4c3e4c90d49ad473b
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_20c12.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp'
+ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/../../../../arm-raspbian-linux-gnueabihf/bin/as -v -march=armv6 -mfloat-abi=hard -mfpu=vfp -meabi=5 -o CMakeFiles/cmTC_20c12.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccI3NkC1.s
+GNU assembler version 2.28.1 (arm-raspbian-linux-gnueabihf) using BFD version (crosstool-NG 1.24.0.261_30316cd) 2.28.1
+COMPILER_PATH=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/../../../../arm-raspbian-linux-gnueabihf/bin/
+LIBRARY_PATH=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_20c12.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp'
+Linking CXX executable cmTC_20c12
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_20c12.dir/link.txt --verbose=1
+/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/bin/arm-raspbian-linux-gnueabihf-g++ --sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/opt/vc/lib -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/local/lib   -v -rdynamic CMakeFiles/cmTC_20c12.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_20c12 
+Using built-in specs.
+COLLECT_GCC=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/bin/arm-raspbian-linux-gnueabihf-g++
+COLLECT_LTO_WRAPPER=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/lto-wrapper
+Target: arm-raspbian-linux-gnueabihf
+Configured with: /home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/src/gcc/configure --build=x86_64-build_pc-linux-gnu --host=x86_64-build_pc-linux-gnu --target=arm-raspbian-linux-gnueabihf --prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf --exec_prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf --with-sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot --enable-languages=c,c++ --with-pkgversion='crosstool-NG 1.24.0.261_30316cd' --enable-__cxa_atexit --enable-libmudflap --enable-libgomp --enable-libssp --enable-libquadmath --enable-libquadmath-support --enable-libsanitizer --disable-libmpx --with-gmp=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-mpfr=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-mpc=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-isl=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --enable-lto --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --enable-threads=posix --disable-plugin --disable-nls --enable-multiarch --with-local-prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot --enable-long-long --with-arch=armv6 --with-float=hard --with-fpu=vfp --enable-libstdcxx-debug --enable-libstdcxx-time=yes --enable-version-specific-runtime-libs
+Thread model: posix
+gcc version 8.4.0 (crosstool-NG 1.24.0.261_30316cd) 
+COMPILER_PATH=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/../../../../arm-raspbian-linux-gnueabihf/bin/
+LIBRARY_PATH=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/
+COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_20c12' '-shared-libgcc'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp'
+ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/collect2 -plugin /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/liblto_plugin.so -plugin-opt=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/lto-wrapper -plugin-opt=-fresolution=/tmp/cc7uoQGu.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot --eh-frame-hdr -export-dynamic -dynamic-linker /lib/ld-linux-armhf.so.3 -X -m armelf_linux_eabi -o cmTC_20c12 /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/crt1.o /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/crti.o /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/crtbegin.o -L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0 -L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf -L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib -L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf -L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/opt/vc/lib -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/local/lib CMakeFiles/cmTC_20c12.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/crtend.o /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_20c12' '-shared-libgcc'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp'
+make[1]: Leaving directory '/home/mikael/projets/SETR/Laboratoire_3/src/build/CMakeFiles/CMakeTmp'
+
+
+
+Parsed CXX implicit include dir info from above output: rv=done
+  found start of include info
+  found start of implicit include info
+    add: [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include/c++]
+    add: [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include/c++/arm-raspbian-linux-gnueabihf/.]
+    add: [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include/c++/backward]
+    add: [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include]
+    add: [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include-fixed]
+    add: [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf]
+    add: [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include]
+  end of search list found
+  collapse include dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include/c++] ==> [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include/c++]
+  collapse include dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include/c++/arm-raspbian-linux-gnueabihf/.] ==> [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include/c++/arm-raspbian-linux-gnueabihf]
+  collapse include dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include/c++/backward] ==> [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include/c++/backward]
+  collapse include dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include] ==> [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include]
+  collapse include dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include-fixed] ==> [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include-fixed]
+  collapse include dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf] ==> [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf]
+  collapse include dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include] ==> [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include]
+  implicit include dirs: [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include/c++;/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include/c++/arm-raspbian-linux-gnueabihf;/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include/c++/backward;/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include;/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include-fixed;/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf;/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include]
+
+
+Parsed CXX implicit link information from above output:
+  link line regex: [^( *|.*[/\])(arm-raspbian-linux-gnueabihf-ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
+  ignore line: [Change Dir: /home/mikael/projets/SETR/Laboratoire_3/src/build/CMakeFiles/CMakeTmp]
+  ignore line: []
+  ignore line: [Run Build Command(s):/usr/bin/make cmTC_20c12/fast && /usr/bin/make  -f CMakeFiles/cmTC_20c12.dir/build.make CMakeFiles/cmTC_20c12.dir/build]
+  ignore line: [make[1]: Entering directory '/home/mikael/projets/SETR/Laboratoire_3/src/build/CMakeFiles/CMakeTmp']
+  ignore line: [Building CXX object CMakeFiles/cmTC_20c12.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/bin/arm-raspbian-linux-gnueabihf-g++ --sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot   -Wl -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/opt/vc/lib -Wl -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf -Wl -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf -Wl -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/local/lib    -v -o CMakeFiles/cmTC_20c12.dir/CMakeCXXCompilerABI.cpp.o -c /usr/local/share/cmake-3.19/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/bin/arm-raspbian-linux-gnueabihf-g++]
+  ignore line: [Target: arm-raspbian-linux-gnueabihf]
+  ignore line: [Configured with: /home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/src/gcc/configure --build=x86_64-build_pc-linux-gnu --host=x86_64-build_pc-linux-gnu --target=arm-raspbian-linux-gnueabihf --prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf --exec_prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf --with-sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot --enable-languages=c c++ --with-pkgversion='crosstool-NG 1.24.0.261_30316cd' --enable-__cxa_atexit --enable-libmudflap --enable-libgomp --enable-libssp --enable-libquadmath --enable-libquadmath-support --enable-libsanitizer --disable-libmpx --with-gmp=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-mpfr=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-mpc=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-isl=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --enable-lto --with-host-libstdcxx='-static-libgcc -Wl -Bstatic -lstdc++ -Bdynamic -lm' --enable-threads=posix --disable-plugin --disable-nls --enable-multiarch --with-local-prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot --enable-long-long --with-arch=armv6 --with-float=hard --with-fpu=vfp --enable-libstdcxx-debug --enable-libstdcxx-time=yes --enable-version-specific-runtime-libs]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 8.4.0 (crosstool-NG 1.24.0.261_30316cd) ]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_20c12.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp']
+  ignore line: [ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/cc1plus -quiet -v -imultilib . -imultiarch arm-linux-gnueabihf -isysroot /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot -D_GNU_SOURCE /usr/local/share/cmake-3.19/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpbase CMakeCXXCompilerABI.cpp -mfloat-abi=hard -mfpu=vfp -mtls-dialect=gnu -marm -march=armv6+fp -auxbase-strip CMakeFiles/cmTC_20c12.dir/CMakeCXXCompilerABI.cpp.o -version -o /tmp/ccI3NkC1.s]
+  ignore line: [GNU C++14 (crosstool-NG 1.24.0.261_30316cd) version 8.4.0 (arm-raspbian-linux-gnueabihf)]
+  ignore line: [	compiled by GNU C version 9.3.0  GMP version 6.1.2  MPFR version 3.1.6  MPC version 1.0.3  isl version isl-0.18-GMP]
+  ignore line: []
+  ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+  ignore line: [ignoring nonexistent directory "/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/include/arm-linux-gnueabihf"]
+  ignore line: [ignoring nonexistent directory "/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/include"]
+  ignore line: [ignoring nonexistent directory "/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/../../../../arm-raspbian-linux-gnueabihf/include"]
+  ignore line: [#include "..." search starts here:]
+  ignore line: [#include <...> search starts here:]
+  ignore line: [ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include/c++]
+  ignore line: [ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include/c++/arm-raspbian-linux-gnueabihf/.]
+  ignore line: [ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include/c++/backward]
+  ignore line: [ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include]
+  ignore line: [ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/include-fixed]
+  ignore line: [ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include/arm-linux-gnueabihf]
+  ignore line: [ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/include]
+  ignore line: [End of search list.]
+  ignore line: [GNU C++14 (crosstool-NG 1.24.0.261_30316cd) version 8.4.0 (arm-raspbian-linux-gnueabihf)]
+  ignore line: [	compiled by GNU C version 9.3.0  GMP version 6.1.2  MPFR version 3.1.6  MPC version 1.0.3  isl version isl-0.18-GMP]
+  ignore line: []
+  ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+  ignore line: [Compiler executable checksum: 1ed624cb0b3a85c4c3e4c90d49ad473b]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_20c12.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp']
+  ignore line: [ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/../../../../arm-raspbian-linux-gnueabihf/bin/as -v -march=armv6 -mfloat-abi=hard -mfpu=vfp -meabi=5 -o CMakeFiles/cmTC_20c12.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccI3NkC1.s]
+  ignore line: [GNU assembler version 2.28.1 (arm-raspbian-linux-gnueabihf) using BFD version (crosstool-NG 1.24.0.261_30316cd) 2.28.1]
+  ignore line: [COMPILER_PATH=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/../../../../arm-raspbian-linux-gnueabihf/bin/]
+  ignore line: [LIBRARY_PATH=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_20c12.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp']
+  ignore line: [Linking CXX executable cmTC_20c12]
+  ignore line: [/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_20c12.dir/link.txt --verbose=1]
+  ignore line: [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/bin/arm-raspbian-linux-gnueabihf-g++ --sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot -Wl -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/opt/vc/lib -Wl -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf -Wl -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf -Wl -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/local/lib   -v -rdynamic CMakeFiles/cmTC_20c12.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_20c12 ]
+  ignore line: [Using built-in specs.]
+  ignore line: [COLLECT_GCC=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/bin/arm-raspbian-linux-gnueabihf-g++]
+  ignore line: [COLLECT_LTO_WRAPPER=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/lto-wrapper]
+  ignore line: [Target: arm-raspbian-linux-gnueabihf]
+  ignore line: [Configured with: /home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/src/gcc/configure --build=x86_64-build_pc-linux-gnu --host=x86_64-build_pc-linux-gnu --target=arm-raspbian-linux-gnueabihf --prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf --exec_prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf --with-sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot --enable-languages=c c++ --with-pkgversion='crosstool-NG 1.24.0.261_30316cd' --enable-__cxa_atexit --enable-libmudflap --enable-libgomp --enable-libssp --enable-libquadmath --enable-libquadmath-support --enable-libsanitizer --disable-libmpx --with-gmp=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-mpfr=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-mpc=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --with-isl=/home/mikael/ct-config-rpi-zero/.build/arm-raspbian-linux-gnueabihf/buildtools --enable-lto --with-host-libstdcxx='-static-libgcc -Wl -Bstatic -lstdc++ -Bdynamic -lm' --enable-threads=posix --disable-plugin --disable-nls --enable-multiarch --with-local-prefix=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot --enable-long-long --with-arch=armv6 --with-float=hard --with-fpu=vfp --enable-libstdcxx-debug --enable-libstdcxx-time=yes --enable-version-specific-runtime-libs]
+  ignore line: [Thread model: posix]
+  ignore line: [gcc version 8.4.0 (crosstool-NG 1.24.0.261_30316cd) ]
+  ignore line: [COMPILER_PATH=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/../../../../arm-raspbian-linux-gnueabihf/bin/]
+  ignore line: [LIBRARY_PATH=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/:/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-rdynamic' '-o' 'cmTC_20c12' '-shared-libgcc'  '-mfloat-abi=hard' '-mfpu=vfp' '-mtls-dialect=gnu' '-marm' '-march=armv6+fp']
+  link line: [ /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/collect2 -plugin /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/liblto_plugin.so -plugin-opt=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/lto-wrapper -plugin-opt=-fresolution=/tmp/cc7uoQGu.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot --eh-frame-hdr -export-dynamic -dynamic-linker /lib/ld-linux-armhf.so.3 -X -m armelf_linux_eabi -o cmTC_20c12 /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/crt1.o /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/crti.o /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/crtbegin.o -L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0 -L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf -L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib -L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf -L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/opt/vc/lib -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf -rpath-link /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/local/lib CMakeFiles/cmTC_20c12.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/crtend.o /home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/crtn.o]
+    arg [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/collect2] ==> ignore
+    arg [-plugin] ==> ignore
+    arg [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/liblto_plugin.so] ==> ignore
+    arg [-plugin-opt=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/libexec/gcc/arm-raspbian-linux-gnueabihf/8.4.0/lto-wrapper] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/cc7uoQGu.res] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lc] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+    arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+    arg [--sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot] ==> ignore
+    arg [--eh-frame-hdr] ==> ignore
+    arg [-export-dynamic] ==> ignore
+    arg [-dynamic-linker] ==> ignore
+    arg [/lib/ld-linux-armhf.so.3] ==> ignore
+    arg [-X] ==> ignore
+    arg [-m] ==> ignore
+    arg [armelf_linux_eabi] ==> ignore
+    arg [-o] ==> ignore
+    arg [cmTC_20c12] ==> ignore
+    arg [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/crt1.o] ==> ignore
+    arg [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/crti.o] ==> ignore
+    arg [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/crtbegin.o] ==> ignore
+    arg [-L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0] ==> dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0]
+    arg [-L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf] ==> dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf]
+    arg [-L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib] ==> dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib]
+    arg [-L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf] ==> dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf]
+    arg [-L/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib] ==> dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib]
+    arg [-rpath-link] ==> ignore
+    arg [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/opt/vc/lib] ==> ignore
+    arg [-rpath-link] ==> ignore
+    arg [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf] ==> ignore
+    arg [-rpath-link] ==> ignore
+    arg [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf] ==> ignore
+    arg [-rpath-link] ==> ignore
+    arg [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/local/lib] ==> ignore
+    arg [CMakeFiles/cmTC_20c12.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [-lstdc++] ==> lib [stdc++]
+    arg [-lm] ==> lib [m]
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [-lgcc] ==> lib [gcc]
+    arg [-lc] ==> lib [c]
+    arg [-lgcc_s] ==> lib [gcc_s]
+    arg [-lgcc] ==> lib [gcc]
+    arg [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0/crtend.o] ==> ignore
+    arg [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf/crtn.o] ==> ignore
+  collapse library dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0] ==> [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0]
+  collapse library dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf] ==> [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf]
+  collapse library dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib] ==> [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib]
+  collapse library dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf] ==> [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf]
+  collapse library dir [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib] ==> [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib]
+  implicit libs: [stdc++;m;gcc_s;gcc;c;gcc_s;gcc]
+  implicit dirs: [/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/lib/gcc/arm-raspbian-linux-gnueabihf/8.4.0;/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf;/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib;/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf;/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib]
+  implicit fwks: []
+
+
+Determining if the include file pthread.h exists passed with the following output:
+Change Dir: /home/mikael/projets/SETR/Laboratoire_3/src/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/usr/bin/make cmTC_4f3ed/fast && /usr/bin/make  -f CMakeFiles/cmTC_4f3ed.dir/build.make CMakeFiles/cmTC_4f3ed.dir/build
+make[1]: Entering directory '/home/mikael/projets/SETR/Laboratoire_3/src/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_4f3ed.dir/CheckIncludeFile.c.o
+/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/bin/arm-raspbian-linux-gnueabihf-gcc --sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot   -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/opt/vc/lib -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/local/lib  -o CMakeFiles/cmTC_4f3ed.dir/CheckIncludeFile.c.o -c /home/mikael/projets/SETR/Laboratoire_3/src/build/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_4f3ed
+/usr/local/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4f3ed.dir/link.txt --verbose=1
+/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/bin/arm-raspbian-linux-gnueabihf-gcc --sysroot=/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/opt/vc/lib -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/lib/arm-linux-gnueabihf -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/lib/arm-linux-gnueabihf -Wl,-rpath-link,/home/mikael/arm-cross-comp-env/arm-raspbian-linux-gnueabihf/arm-raspbian-linux-gnueabihf/sysroot/usr/local/lib  -rdynamic CMakeFiles/cmTC_4f3ed.dir/CheckIncludeFile.c.o -o cmTC_4f3ed 
+make[1]: Leaving directory '/home/mikael/projets/SETR/Laboratoire_3/src/build/CMakeFiles/CMakeTmp'
+
+
+
