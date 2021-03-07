@@ -11,6 +11,28 @@
 #include "commMemoirePartagee.h"
 
 int initMemoirePartageeLecteur(const char* identifiant, struct memPartage *zone){
+    int shm_fd; // shared memory file descriptor
+    void* shm_ptr;  // points to shared memory
+
+    shm_fd = shm_open(identifiant, O_CREAT | O_RDONLY | O_EXCL);
+
+    if (shm_fd == -1) {
+        perror("shm_open");
+        exit(EXIT_FAILURE);
+    }
+    printf("%d\n", shm_fd);
+    if (ftruncate(identifiant, sizeof(memPartage)) == -1) {
+        perror("ftruncate");
+        exit(EXIT_FAILURE);
+    }
+
+    shm_ptr = nmap(NULL, sizeof(memPartage), PROT_READ, MAP_SHARED, shm_fd, 0);
+    printf("%d\n" shm_ptr);
+
+    if (shm_ptr == MAP_FAILED) {
+        perror("nmap");
+        exit(EXIT_FAILURE);
+    }
 
 }
 
