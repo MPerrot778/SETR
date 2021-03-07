@@ -49,7 +49,7 @@ struct memPartageHeader{
 struct memPartage{
     int fd;
     struct memPartageHeader *header;
-    size_t tailleDonnees;
+    size_t tailleDonnees;  
     unsigned char* data;
     uint32_t copieCompteur;             // Permet de se rappeler le compteur de l'autre processus
 };
