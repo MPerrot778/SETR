@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <string.h>
+#include <stdlib.h>
 #include "commMemoirePartagee.h"
 
 int initMemoirePartageeLecteur(const char* identifiant, struct memPartage *zone){   
@@ -26,12 +27,12 @@ int initMemoirePartageeEcrivain(const char* identifiant, struct memPartage* zone
 
     if (shm_fd == -1) {
         perror("shm_open");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     printf("%d\n", shm_fd);
     if (ftruncate(identifiant, taille) == -1) {
         perror("ftruncate");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     shm_ptr = nmap(NULL, taille, PROT_WRITE, MAP_SHARED, shm_fd, 0);
@@ -39,7 +40,7 @@ int initMemoirePartageeEcrivain(const char* identifiant, struct memPartage* zone
 
     if (shm_ptr == MAP_FAILED) {
         perror("nmap");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     zone->fd = shm_fd;
@@ -50,7 +51,7 @@ int initMemoirePartageeEcrivain(const char* identifiant, struct memPartage* zone
     pthread_mutex_t shm_mutex = PTHREAD_MUTEX_INITIALIZER;
     if(pthread_mutex_init(&shm_mutex, NULL) != 0) {
         perror("mutex");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
 
     headerInfos->mutex = shm_mutex;

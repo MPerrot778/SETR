@@ -53,6 +53,7 @@ int main(int argc, char* argv[]){
     // pour décoder une image JPEG contenue dans un buffer!
     // N'oubliez pas également que ce décodeur doit lire les fichiers ULV EN BOUCLE
     struct memPartage *testmem;
+    struct memPartageHeader *testmemheader;
     int aflag = 0;
     int bflag = 0;
     int sflag = 0;
@@ -115,6 +116,6 @@ int main(int argc, char* argv[]){
     for (index = optind; index < argc; index++)
         printf ("Non-option argument %s\n", argv[index]);
 
-    int tester = initMemoirePartageeLecteur("/test\n", testmem)
+    int tester = initMemoirePartageeEcrivain("/test\n", testmem, (size_t)32,testmemheader);
     return 0;
 }
