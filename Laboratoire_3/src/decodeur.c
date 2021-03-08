@@ -4,12 +4,14 @@
 // Nécessaire pour pouvoir utiliser sched_setattr et le mode DEADLINE
 #include <sched.h>
 #include "schedsupp.h"
+#include <ctype.h>
+#include <stdio.h>
 
 #include "allocateurMemoire.h"
 #include "commMemoirePartagee.h"
 #include "utils.h"
 
-#include "jpgd.h"
+//#include "jpgd.hpp"
 
 // Définition de diverses structures pouvant vous être utiles pour la lecture d'un fichier ULV
 #define HEADER_SIZE 4
@@ -39,6 +41,10 @@ struct videoInfos{
 *            4          uint32    0 (indique la fin du fichier)
 ******************************************************************************/
 
+int setOrd(int type, const struct sched_param *param){
+    return sched_setscheduler(getpid(), type, param);
+}
+
 
 int main(int argc, char* argv[]){
     
@@ -54,18 +60,43 @@ int main(int argc, char* argv[]){
     char *cvalue, *svalue, *dvalue = NULL;
     int index;
     int c;
+    int i = 0;
+    int ret;
 
+    char schedType[4][10] = {"NORT", "RR", "FIFO", "DEADLINE"};
+    int schedPolicy[4] = {0, 2, 1, 6};
+    struct sched_param *p;
+    
     // -s, -d, --debug
     while ((c = getopt (argc, argv, "as:d::")) != -1){
         switch (c){
             case 'a':
                 aflag = 1;
+            case 's':
+                sflag = 1;
+                svalue = optarg;
+                while(i<4){
+                    if(strcmp(schedType[i],svalue) == 0){
+                        break;
+                    }
+                    i++;
+                }
+                if(i==4){
+                    printf("Not valid scheduler policy\n");
+                    exit(1);
+                }
+                ret = setOrd(schedPolicy[i],p);
+                if(ret < 0){
+                    printf("error no: %d\n",errno);
+                    exit(1);
+                }
+                printf("scheduling done : %d\n",ret);
                 break;
-            case 'b':
-                bflag = 1;
-                break;
-            case 'c':
-                cvalue = optarg;
+
+            case 'd':
+                if(sflag){
+                    printf("it worked\n");
+                }
                 break;
             case '?':
                 if (optopt == 'c')
