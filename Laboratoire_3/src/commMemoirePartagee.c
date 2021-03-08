@@ -30,13 +30,13 @@ int initMemoirePartageeEcrivain(const char* identifiant, struct memPartage* zone
         exit(EXIT_FAILURE);
     }
     printf("%d\n", shm_fd);
-    if (ftruncate(identifiant, taille) == -1) {
+    if (ftruncate(shm_fd, taille) == -1) {
         perror("ftruncate");
         exit(EXIT_FAILURE);
     }
 
-    shm_ptr = nmap(NULL, taille, PROT_WRITE, MAP_SHARED, shm_fd, 0);
-    printf("%d\n", shm_ptr);
+    shm_ptr = mmap(NULL, taille, PROT_WRITE, MAP_SHARED, shm_fd, 0);
+    //printf("%d\n", shm_ptr);
 
     if (shm_ptr == MAP_FAILED) {
         perror("nmap");
@@ -45,6 +45,7 @@ int initMemoirePartageeEcrivain(const char* identifiant, struct memPartage* zone
 
     zone->fd = shm_fd;
     zone->tailleDonnees = taille;
+
 
     /* Create Mutex in shared memory header */
 
@@ -56,6 +57,8 @@ int initMemoirePartageeEcrivain(const char* identifiant, struct memPartage* zone
 
     headerInfos->mutex = shm_mutex;
     zone->copieCompteur++; 
+
+    return 0;
 
 }
 
@@ -69,4 +72,31 @@ int attenteLecteurAsync(struct memPartage *zone){
 
 int attenteEcrivain(struct memPartage *zone){
     
+}
+
+
+int main(int argc, char* argv[]){
+    struct memPartage *testmem = malloc(sizeof(*testmem));
+    struct memPartageHeader *testmemheader = malloc(sizeof(*testmemheader));
+    int c;
+    char *id;
+
+    while((c = getopt (argc, argv, "a:")) != -1){
+        switch (c){
+            case 'a':
+                id = optarg;
+                printf("Shared mem name: %s\n",id);
+                break;
+            default:
+                abort();
+        }
+    }  
+
+    if(initMemoirePartageeEcrivain(id, testmem, (size_t)32,testmemheader) == 0){
+        printf("mem correctly initialized\n");
+    }
+    else{
+        exit(1);
+    }
+    return 0;
 }
