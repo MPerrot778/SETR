@@ -11,8 +11,11 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <string.h>
+#include <stdlib.h>
 
 #define DELAI_INIT_READER_USEC 1000
+
+#define ErrorExit(str)  do { perror(str); exit(EXIT_FAILURE);} while (0)
 
 /* Architecture du buffer partagé (voir l'énoncé pour plus de détails) :
  *
