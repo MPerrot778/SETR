@@ -13,12 +13,14 @@
 #include "allocateurMemoire.h"
 #include "commMemoirePartagee.h"
 #include "utils.h"
+#include "jpgd.h"
 
 //#include "jpgd.hpp"
 
 // Définition de diverses structures pouvant vous être utiles pour la lecture d'un fichier ULV
 #define HEADER_SIZE 4
 const char header[] = "SETR";
+
 
 struct videoInfos{
         uint32_t largeur;
@@ -45,8 +47,6 @@ struct videoInfos{
 ******************************************************************************/
 
 static int debug_flag;
-FILE *ptr;
-
 
 int main(int argc, char* argv[]){
     
@@ -55,21 +55,16 @@ int main(int argc, char* argv[]){
     // pour décoder une image JPEG contenue dans un buffer!
     // N'oubliez pas également que ce décodeur doit lire les fichiers ULV EN BOUCLE
  
+    // getopt variable
     int c;
-    int index;
     char *svalue;
     char *dvalue;
     int deadline_flag = 0;
-    struct sched_param p = {
-        .sched_priority = 90
-    };
+    struct sched_param p;
     struct sched_attr attr;
-    int ord;
-
-    char *inFile;
-    char *outMem;
 
     // getopt section
+    p.sched_priority = 90;
     static struct option long_options[] = {
         {"debug", no_argument, &debug_flag, 1},
         {"set_scheduler", required_argument, 0, 's'},
@@ -176,38 +171,114 @@ int main(int argc, char* argv[]){
         printf("Debug mode activated\n");
     }    
 
-    // start of the algorithm
-    inFile = (char*)argv[optind];
-    outMem = (char*)argv[optind+1];
+    // algorithm variable
+    char *inFile = (char*)argv[optind];
+    char *outMem = (char*)argv[optind+1];
 
+    int   offset   = 0;
+    int   frameSize = 0;
+
+    struct stat inFile_stat_info;
+    struct videoInfos *vidInfos = (struct videoInfos *)malloc(sizeof(vidInfos));
+    struct memPartage *memPartage = (struct memPartage *)malloc(sizeof(memPartage));;
+    struct memPartageHeader *memPartageHeader = (struct memPartageHeader *)malloc(sizeof(memPartageHeader));;
+    memPartageHeader->frameReader = 0;
+    memPartageHeader->frameWriter = 0;
+
+    // start of the algorithm
     int fd = open(inFile, O_RDONLY);
     if(fd < 0){
         printf("failed to open file\n");
         exit(EXIT_FAILURE);
     }
     
-    struct stat inFile_stat_info;
+
     fstat(fd, &inFile_stat_info);
     char* inFile_mem = (char*)mmap(NULL, inFile_stat_info.st_size, PROT_READ, MAP_POPULATE | MAP_PRIVATE, fd, 0);
-    
+
+    // Validate header
     if(strncmp(header, inFile_mem, HEADER_SIZE) <0){
         printf("Invalid Header\n");
         exit(EXIT_FAILURE);
     }
-    int offset = 4;
-    // Parsing video infos (l,h,c,fps)
-    struct videoInfos *vidInfos = malloc(sizeof(vidInfos));
+    offset += 4;
+
+    // Parsing video infos (l,h,c,fps) into memPartagerHeader
     memcpy(&vidInfos->hauteur, inFile_mem + offset,4);
+    memPartageHeader->hauteur = vidInfos->hauteur;
     offset += 4;
     memcpy(&vidInfos->largeur, inFile_mem + offset,4);
+    memPartageHeader->largeur = vidInfos->largeur;
     offset += 4;
     memcpy(&vidInfos->canaux, inFile_mem + offset, 4);
+    memPartageHeader->canaux = vidInfos->canaux;
     offset += 4;
     memcpy(&vidInfos->fps, inFile_mem + offset, 4);
+    memPartageHeader->fps = vidInfos->fps;
     offset += 4;
     printf("video largeur: %d \nvideo hauteur: %d \nvideo nbr cannaux: %d \nvideo fps: %d \n", vidInfos->largeur, vidInfos->hauteur, vidInfos->canaux, vidInfos->fps);
 
-    // reading N images 
+    // compute frameSize (l*h*c) and prepare memory pool
+    frameSize = vidInfos->largeur*vidInfos->hauteur*vidInfos->canaux;
+    prepareMemoire(frameSize,frameSize);
+
+    if(initMemoirePartageeEcrivain(outMem, memPartage, frameSize, memPartageHeader)){
+        printf("Failed to init shared memory\n");
+        exit(EXIT_FAILURE);
+    }
+
+    pthread_mutex_lock(&memPartage->header->mutex);
+    memPartage->header->frameWriter = 0;
+
+    //mettre le fichier en memoire
+    uint32_t current_reader_idx = 0;
+
+    //boucle continu
+
+    // Decoding loop
+    while (1) {
+
+        if (offset >= inFile_stat_info.st_size - 4) {
+            offset = 20;
+        }
+        //extraire taille prochaine image
+        uint32_t compressed_image_size;
+        memcpy(&compressed_image_size, inFile_mem + offset, 4);
+        offset += 4;
+
+        //decoder
+        int width, height, actual_comp, comp = 0;
+        width = vidInfos->largeur;
+        height = vidInfos->hauteur;
+        comp = vidInfos->canaux;
+        unsigned char* frame;
+
+        frame = jpgd::decompress_jpeg_image_from_memory((const unsigned char*) (inFile_mem + offset), compressed_image_size, &width, &height, &actual_comp, comp);
+        
+        memPartage->header->largeur = width;
+        memPartage->header->hauteur = height;
+        memPartage->header->canaux = actual_comp;
+
+        uint32_t image_size = width*height*actual_comp;
+
+        //enregistreImage(frame, height, width, actual_comp, "frame.ppm");
+
+        //copie de la frame
+        memcpy(memPartage->data, frame, image_size);
+
+        tempsreel_free(frame);
+
+        //liberation du mutex et mise a jour de notre index prive
+        offset += compressed_image_size;
+        current_reader_idx = memPartage->header->frameReader;
+        memPartage->header->frameWriter++;
+        pthread_mutex_unlock(&memPartage->header->mutex);
+        while (current_reader_idx == memPartage->header->frameReader); //on attend apres le lecteur
+
+        //acquisition du mutex
+        pthread_mutex_lock(&memPartage->header->mutex);
+    }
+    return 0;
 
 
     return 0;
