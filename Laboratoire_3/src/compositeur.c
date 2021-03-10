@@ -62,6 +62,9 @@
 #include "utils.h"
 
 
+int frame_count[] = {0,0,0,0};
+
+
 // Fonction permettant de récupérer le temps courant sous forme double
 double get_time()
 {
@@ -177,6 +180,8 @@ void ecrireImage(const int position, const int total,
 	if (ioctl(fbfd, FBIOPAN_DISPLAY, vinfoPtr)) {
 		printf("Erreur lors du changement de buffer (double buffering inactif)!\n");
 	}
+
+	frame_count[position]++;
 }
 
 
@@ -186,7 +191,25 @@ int main(int argc, char* argv[])
     // TODO
     // ÉCRIVEZ ICI votre code d'analyse des arguments du programme et d'initialisation des zones mémoire partagées
     int nbrActifs;      // Après votre initialisation, cette variable DOIT contenir le nombre de flux vidéos actifs (de 1 à 4 inclusivement).
+	size_t frame = 0;
 
+	/* TODO args */
+
+	/* open shared memory */
+
+	struct memPartage zones[nbrActifs];
+	for(int i=0; i < nbrActifs; i++) {
+		if(initMemoirePartageeLecteur(argv,&zones[i]) != 0)			// TODO: add argv
+			ErrorExit("initMemoirePartageeLecteur - Compositeur");
+	}
+
+	for(int i=0; i < nbrActifs; i++) {
+		if(zones[i].tailleDonnees > frame)			
+			frame = zones[i].tailleDonnees;		// get biggest frame size
+	}
+
+	prepareMemoire(frame, 0);
+	
     // Initialisation des structures nécessaires à l'affichage
     long int screensize = 0;
     // Ouverture du framebuffer
@@ -249,6 +272,19 @@ int main(int argc, char* argv[])
 		return -1;
     }
 
+	struct timeval time[nbrActifs];
+	struct timeval diff[nbrActifs];
+	for (int i = 0; i < nbrActifs; i++) {
+		gettimeofday(&time[i], NULL);
+		diff[i].tv_sec = 0;
+		diff[i].tv_sec = 1000000/zones[i].header->fps;
+	}
+
+	struct timeval ctr_time;
+	gettimeofday(&ctr_time, NULL);
+
+	FILE *log = fopen("stats.txt", "w+");
+	fclose(log);
 
     while(1){
             // Boucle principale du programme
@@ -263,21 +299,67 @@ int main(int argc, char* argv[])
         
             // N'oubliez pas que toutes les images fournies à ecrireImage() DOIVENT être en
             // 427x240 (voir le commentaire en haut du document).
-        
-            // Exemple d'appel à ecrireImage (n'oubliez pas de remplacer les arguments commençant par A_REMPLIR!)
-            ecrireImage(A_REMPLIR_POSITION_ACTUELLE, 
-                        nbrActifs, 
-                        fbfd, 
-                        fbp, 
-                        vinfo.xres, 
-                        vinfo.yres, 
-                        &vinfo, 
-                        finfo.line_length,
-                        A_REMPLIR_DONNEES_DE_LA_TRAME,
-                        A_REMPLIR_LARGEUR_DE_LA_TRAME,
-                        A_REMPLIR_HAUTEUR_DE_LA_TRAME,
-                        A_REMPLIR_NOMBRECANAUX_DANS_LA_TRAME);
-    }
+
+			struct timeval current_time;
+			gettimeofday(&current_time, NULL);
+
+			int time_diff = current_time.tv_sec - ctr_time.tv_sec;
+			if (time_diff > 1) {
+				ctr_time.tv_sec = current_time.tv_sec;
+				FILE *log = fopen("stats.txt", "a");
+				if (log == NULL)
+					printf("Erreur - log file");				
+			
+
+				fseek(log,0,SEEK_END);
+				for (int i=0; i < nbrActifs; i++) {
+					float count = frame_count[i];
+					float fps = count/time_diff;
+					fprintf(log,"(%d) flux %d: %f\n", ctr_time, i, fps);
+					frame_count[i] = 0;
+				}
+				fclose(log);
+			}
+
+			for (int i=0; i < nbrActifs; i++) {
+				struct timeval current_diff;
+				timersub(&current_time, &time[i], &current_diff);
+				if (timercmp(&current_diff, &diff[i], <))
+					continue;
+
+				if(attenteLecteurAsync(&zones[i]) != 0)
+					continue;
+
+				uint32_t largeur = zones[i].header->largeur;
+				uint32_t hauteur = zones[i].header->hauteur;
+				uint32_t canaux = zones[i].header->canaux;
+
+				// TODO : inutile?
+				size_t tailleDonnees = largeur * hauteur * canaux;
+
+				// Exemple d'appel à ecrireImage (n'oubliez pas de remplacer les arguments commençant par A_REMPLIR!)
+				ecrireImage(i, 
+							nbrActifs, 
+							fbfd, 
+							fbp, 
+							vinfo.xres, 
+							vinfo.yres, 
+							&vinfo, 
+							finfo.line_length,
+							zones[i].data,
+							largeur,
+							hauteur,
+							canaux);
+				
+				gettimeofday(&time[i], NULL);
+
+				zones[i].header->frameReader += 1;
+
+				pthread_mutex_unlock(&zones[i].header->mutex);
+
+			}        
+            
+		}		
 
 
     // cleanup
