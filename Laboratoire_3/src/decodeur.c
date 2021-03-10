@@ -6,6 +6,9 @@
 #include "schedsupp.h"
 #include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <getopt.h>
+#include <string.h>
 
 #include "allocateurMemoire.h"
 #include "commMemoirePartagee.h"
@@ -41,10 +44,8 @@ struct videoInfos{
 *            4          uint32    0 (indique la fin du fichier)
 ******************************************************************************/
 
-int setOrd(int type, const struct sched_param *param){
-    return sched_setscheduler(getpid(), type, param);
-}
-
+static int debug_flag;
+FILE *ptr;
 
 int main(int argc, char* argv[]){
     
@@ -52,53 +53,94 @@ int main(int argc, char* argv[]){
     // N'oubliez pas que vous pouvez utiliser jpgd::decompress_jpeg_image_from_memory()
     // pour décoder une image JPEG contenue dans un buffer!
     // N'oubliez pas également que ce décodeur doit lire les fichiers ULV EN BOUCLE
-    struct memPartage *testmem;
-    struct memPartageHeader *testmemheader;
-    int aflag = 0;
-    int bflag = 0;
-    int sflag = 0;
-    int dflag = 0;
-    char *cvalue, *svalue, *dvalue = NULL;
-    int index;
+ 
     int c;
-    int i = 0;
-    int ret;
-
-    char schedType[4][10] = {"NORT", "RR", "FIFO", "DEADLINE"};
-    int schedPolicy[4] = {0, 2, 1, 6};
+    int index;
+    char *svalue;
+    char *dvalue;
+    int deadline_flag = 0;
     struct sched_param *p;
-    
-    // -s, -d, --debug
-    while ((c = getopt (argc, argv, "as:d::")) != -1){
-        switch (c){
-            case 'a':
-                aflag = 1;
+    struct sched_attr attr;
+    int ord;
+
+    static struct option long_options[] = {
+        {"debug", no_argument, &debug_flag, 1},
+        {"set_scheduler", required_argument, 0, 's'},
+        {0, 0, 0, 0}
+    };
+    int option_index = 0;
+    while ((c = getopt_long(argc, argv, "s:d:t::", long_options, &option_index)) != -1){
+        switch(c){
+            case 0:
+                /* If this option set a flag, do nothing else now. */
+                if (long_options[option_index].flag != 0)
+                    break;
+                printf ("option %s", long_options[option_index].name);
+                if (optarg)
+                    printf (" with arg %s", optarg);
+                printf ("\n");
+                break;
+
             case 's':
-                sflag = 1;
                 svalue = optarg;
-                while(i<4){
-                    if(strcmp(schedType[i],svalue) == 0){
-                        break;
+                if(strcmp(svalue,"NORT\0")==0){
+                    printf("NORT scheduler [Default]\n");
+                }
+                else if (strcmp(svalue,"RR\0")==0)
+                {
+                    if(sched_setscheduler(getpid(),SCHED_RR,p)<0){
+                        perror("failed to initialize scheduler\n");
+                        exit(EXIT_FAILURE);
                     }
-                    i++;
+                    printf("RR scheduler initialized\n");
                 }
-                if(i==4){
-                    printf("Not valid scheduler policy\n");
-                    exit(1);
+                else if (strcmp(svalue,"FIFO\0")==0)
+                {
+                    if(sched_setscheduler(getpid(),SCHED_FIFO,p)<0){
+                        perror("failed to initialize scheduler\n");
+                        exit(EXIT_FAILURE);
+                    }
+                    printf("FIFO scheduler initialized\n");
                 }
-                ret = setOrd(schedPolicy[i],p);
-                if(ret < 0){
-                    printf("error no: %d\n",errno);
-                    exit(1);
-                }
-                printf("scheduling done : %d\n",ret);
+                else if (strcmp(svalue,"DEADLINE\0")==0)
+                {   
+                    deadline_flag = 1;
+                    attr.size = sizeof(attr);
+                    attr.sched_policy = SCHED_DEADLINE;
+                    attr.sched_flags = 0;
+                }     
                 break;
 
             case 'd':
-                if(sflag){
-                    printf("it worked\n");
+                if(!deadline_flag){
+                    printf("DEADLINE scheduler need to be set first");
+                    exit(EXIT_FAILURE);
                 }
+                // Splits into tokens
+                dvalue = strtok((char*)optarg,",");
+
+                //Runtime
+                printf("sched_runtime: %s ns\n",dvalue);
+                attr.sched_runtime = atoi(dvalue);
+                dvalue = strtok(NULL,",");
+
+                printf("sched_deadline: %s ns\n",dvalue);
+                attr.sched_deadline = atoi(dvalue);
+                dvalue = strtok(NULL,",");
+
+                printf("sched_period: %s ns\n",dvalue);
+                attr.sched_period = atoi(dvalue);
+                dvalue = strtok(NULL,",");
+
                 break;
+
+            case 't':
+                if(strlen((char*)optarg) == 0){
+                    exit(EXIT_FAILURE);
+                }
+                printf("%s\n",(char*)optarg);
+                break;
+
             case '?':
                 if (optopt == 'c')
                 fprintf (stderr, "Option -%c requires an argument.\n", optopt);
@@ -108,14 +150,32 @@ int main(int argc, char* argv[]){
                 fprintf (stderr,
                         "Unknown option character `\\x%x'.\n",
                         optopt);
-                return 1;
+                return 1;                
             default:
+                fprintf(stderr,"%s [-s SCHED_TYPE] [-d SCHED_ATTR] input_flux output_flux\n",argv[0]);
                 abort ();
         }
     }
-    for (index = optind; index < argc; index++)
-        printf ("Non-option argument %s\n", argv[index]);
 
-    int tester = initMemoirePartageeEcrivain("/test\n", testmem, (size_t)32,testmemheader);
+    if(argc == 1){
+        fprintf(stderr,"%s [-s SCHED_TYPE] [-d SCHED_ATTR] input_flux output_flux\n",argv[0]);
+        exit(EXIT_FAILURE);        
+    }
+
+    if(deadline_flag){
+       if(sched_setattr(getpid(),&attr,0)){
+           perror("sched_setattr()");
+           exit(EXIT_FAILURE);
+       } 
+    }
+
+    if(debug_flag){
+        // ADD routine for debug
+        printf("Debug mode activated\n");
+    }    
+
+    printf("file_name: %s\n",argv[optind]);
+    printf("out_mem: %s\n", argv[optind+1]);
+
     return 0;
 }
