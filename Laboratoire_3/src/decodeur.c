@@ -124,15 +124,15 @@ int main(int argc, char* argv[]){
 
                 //Runtime
                 printf("sched_runtime: %s ns\n",dvalue);
-                attr.sched_runtime = atoi(dvalue);
+                attr.sched_runtime = (uint32_t)atoi(dvalue);
                 dvalue = strtok(NULL,",");
 
                 printf("sched_deadline: %s ns\n",dvalue);
-                attr.sched_deadline = atoi(dvalue);
+                attr.sched_deadline = (uint32_t)atoi(dvalue);
                 dvalue = strtok(NULL,",");
 
                 printf("sched_period: %s ns\n",dvalue);
-                attr.sched_period = atoi(dvalue);
+                attr.sched_period = (uint32_t)atoi(dvalue);
                 dvalue = strtok(NULL,",");
 
                 break;
@@ -178,6 +178,11 @@ int main(int argc, char* argv[]){
     int   offset   = 0;
     int   frameSize = 0;
 
+    uint32_t current_reader_idx = 0;
+    uint32_t compressed_image_size;
+    uint32_t decompressed_image_size = 0;
+    int actual_comp = 0;
+
     struct stat inFile_stat_info;
     struct videoInfos *vidInfos = (struct videoInfos *)malloc(sizeof(vidInfos));
     struct memPartage *memPartage = (struct memPartage *)malloc(sizeof(memPartage));;
@@ -220,51 +225,43 @@ int main(int argc, char* argv[]){
 
     // compute frameSize (l*h*c) and prepare memory pool
     frameSize = vidInfos->largeur*vidInfos->hauteur*vidInfos->canaux;
-    prepareMemoire(frameSize,frameSize);
+    
+    
+    prepareMemoire(frameSize,frameSize); // À débugger
 
     if(initMemoirePartageeEcrivain(outMem, memPartage, frameSize, memPartageHeader)){
         printf("Failed to init shared memory\n");
         exit(EXIT_FAILURE);
     }
 
-    pthread_mutex_lock(&memPartage->header->mutex);
+
     memPartage->header->frameWriter = 0;
-
-    //mettre le fichier en memoire
-    uint32_t current_reader_idx = 0;
-
-    //boucle continu
 
     // Decoding loop
     while (1) {
 
+        pthread_mutex_lock(&memPartage->header->mutex);
+
+        // looping to begining of the file, if end reached
         if (offset >= inFile_stat_info.st_size - 4) {
             offset = 20;
         }
-        //extraire taille prochaine image
-        uint32_t compressed_image_size;
+
         memcpy(&compressed_image_size, inFile_mem + offset, 4);
         offset += 4;
 
-        //decoder
-        int width, height, actual_comp, comp = 0;
-        width = vidInfos->largeur;
-        height = vidInfos->hauteur;
-        comp = vidInfos->canaux;
-        unsigned char* frame;
+        unsigned char *frame = (unsigned char *)tempsreel_malloc(compressed_image_size);
+        //decode jpg img
 
-        frame = jpgd::decompress_jpeg_image_from_memory((const unsigned char*) (inFile_mem + offset), compressed_image_size, &width, &height, &actual_comp, comp);
+        frame = jpgd::decompress_jpeg_image_from_memory((const unsigned char*) (inFile_mem + offset), compressed_image_size, (int *)&vidInfos->largeur, (int *)&vidInfos->hauteur, &actual_comp, vidInfos->canaux);
         
-        memPartage->header->largeur = width;
-        memPartage->header->hauteur = height;
+        memPartage->header->largeur = vidInfos->largeur;
+        memPartage->header->hauteur = vidInfos->hauteur;
         memPartage->header->canaux = actual_comp;
 
-        uint32_t image_size = width*height*actual_comp;
+        decompressed_image_size = vidInfos->largeur*vidInfos->hauteur*actual_comp;
 
-        //enregistreImage(frame, height, width, actual_comp, "frame.ppm");
-
-        //copie de la frame
-        memcpy(memPartage->data, frame, image_size);
+        memcpy(memPartage->data, frame, decompressed_image_size);
 
         tempsreel_free(frame);
 
@@ -273,10 +270,9 @@ int main(int argc, char* argv[]){
         current_reader_idx = memPartage->header->frameReader;
         memPartage->header->frameWriter++;
         pthread_mutex_unlock(&memPartage->header->mutex);
+
         while (current_reader_idx == memPartage->header->frameReader); //on attend apres le lecteur
 
-        //acquisition du mutex
-        pthread_mutex_lock(&memPartage->header->mutex);
     }
     return 0;
 
