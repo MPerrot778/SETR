@@ -47,6 +47,7 @@ struct videoInfos{
 static int debug_flag;
 FILE *ptr;
 
+
 int main(int argc, char* argv[]){
     
     // Écrivez le code de décodage et d'envoi sur la zone mémoire partagée ici!
@@ -59,17 +60,23 @@ int main(int argc, char* argv[]){
     char *svalue;
     char *dvalue;
     int deadline_flag = 0;
-    struct sched_param *p;
+    struct sched_param p = {
+        .sched_priority = 90
+    };
     struct sched_attr attr;
     int ord;
 
+    char *inFile;
+    char *outMem;
+
+    // getopt section
     static struct option long_options[] = {
         {"debug", no_argument, &debug_flag, 1},
         {"set_scheduler", required_argument, 0, 's'},
         {0, 0, 0, 0}
     };
     int option_index = 0;
-    while ((c = getopt_long(argc, argv, "s:d:t::", long_options, &option_index)) != -1){
+    while ((c = getopt_long(argc, argv, "s:d:", long_options, &option_index)) != -1){
         switch(c){
             case 0:
                 /* If this option set a flag, do nothing else now. */
@@ -88,7 +95,7 @@ int main(int argc, char* argv[]){
                 }
                 else if (strcmp(svalue,"RR\0")==0)
                 {
-                    if(sched_setscheduler(getpid(),SCHED_RR,p)<0){
+                    if(sched_setscheduler(getpid(),SCHED_RR,&p)<0){
                         perror("failed to initialize scheduler\n");
                         exit(EXIT_FAILURE);
                     }
@@ -96,7 +103,7 @@ int main(int argc, char* argv[]){
                 }
                 else if (strcmp(svalue,"FIFO\0")==0)
                 {
-                    if(sched_setscheduler(getpid(),SCHED_FIFO,p)<0){
+                    if(sched_setscheduler(getpid(),SCHED_FIFO,&p)<0){
                         perror("failed to initialize scheduler\n");
                         exit(EXIT_FAILURE);
                     }
@@ -108,6 +115,7 @@ int main(int argc, char* argv[]){
                     attr.size = sizeof(attr);
                     attr.sched_policy = SCHED_DEADLINE;
                     attr.sched_flags = 0;
+                    attr.sched_priority = 90;
                 }     
                 break;
 
@@ -134,13 +142,6 @@ int main(int argc, char* argv[]){
 
                 break;
 
-            case 't':
-                if(strlen((char*)optarg) == 0){
-                    exit(EXIT_FAILURE);
-                }
-                printf("%s\n",(char*)optarg);
-                break;
-
             case '?':
                 if (optopt == 'c')
                 fprintf (stderr, "Option -%c requires an argument.\n", optopt);
@@ -150,7 +151,8 @@ int main(int argc, char* argv[]){
                 fprintf (stderr,
                         "Unknown option character `\\x%x'.\n",
                         optopt);
-                return 1;                
+                return 1;
+
             default:
                 fprintf(stderr,"%s [-s SCHED_TYPE] [-d SCHED_ATTR] input_flux output_flux\n",argv[0]);
                 abort ();
@@ -174,8 +176,39 @@ int main(int argc, char* argv[]){
         printf("Debug mode activated\n");
     }    
 
-    printf("file_name: %s\n",argv[optind]);
-    printf("out_mem: %s\n", argv[optind+1]);
+    // start of the algorithm
+    inFile = (char*)argv[optind];
+    outMem = (char*)argv[optind+1];
+
+    int fd = open(inFile, O_RDONLY);
+    if(fd < 0){
+        printf("failed to open file\n");
+        exit(EXIT_FAILURE);
+    }
+    
+    struct stat inFile_stat_info;
+    fstat(fd, &inFile_stat_info);
+    char* inFile_mem = (char*)mmap(NULL, inFile_stat_info.st_size, PROT_READ, MAP_POPULATE | MAP_PRIVATE, fd, 0);
+    
+    if(strncmp(header, inFile_mem, HEADER_SIZE) <0){
+        printf("Invalid Header\n");
+        exit(EXIT_FAILURE);
+    }
+    int offset = 4;
+    // Parsing video infos (l,h,c,fps)
+    struct videoInfos *vidInfos = malloc(sizeof(vidInfos));
+    memcpy(&vidInfos->hauteur, inFile_mem + offset,4);
+    offset += 4;
+    memcpy(&vidInfos->largeur, inFile_mem + offset,4);
+    offset += 4;
+    memcpy(&vidInfos->canaux, inFile_mem + offset, 4);
+    offset += 4;
+    memcpy(&vidInfos->fps, inFile_mem + offset, 4);
+    offset += 4;
+    printf("video largeur: %d \nvideo hauteur: %d \nvideo nbr cannaux: %d \nvideo fps: %d \n", vidInfos->largeur, vidInfos->hauteur, vidInfos->canaux, vidInfos->fps);
+
+    // reading N images 
+
 
     return 0;
 }
