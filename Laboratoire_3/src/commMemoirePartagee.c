@@ -82,8 +82,7 @@ int attenteLecteur(struct memPartage *zone){
 
     while(zone->header->frameWriter == zone->header->frameReader);
     pthread_mutex_t mutex = zone->header->mutex;
-    pthread_mutex_lock(&mutex); // acquisition du mutex
-    return 0;
+    return pthread_mutex_lock(&mutex); // acquisition du mutex
 }
 
 /* returns 0 si mutex est acquit, 1 sinon */
@@ -93,42 +92,14 @@ int attenteLecteurAsync(struct memPartage *zone){
         return 1;
 
     pthread_mutex_t mutex = zone->header->mutex;
-    if (pthread_mutex_trylock(&mutex) == 0)    // acquisiton non bloquant du mutex
-        return 0;
-    
-    return 1;
+    return pthread_mutex_trylock(&mutex);
 }
 
 int attenteEcrivain(struct memPartage *zone){
 
     while(zone->copieCompteur == zone->header->frameReader);
     pthread_mutex_t mutex = zone->header->mutex;
-    pthread_mutex_lock(&mutex); // acquisition du mutex
     zone->copieCompteur++; // incremente compteur_ecrivain
+    return pthread_mutex_lock(&mutex); // acquisition du mutex
 }
 
-int main(int argc, char* argv[]){
-    struct memPartage *testmem = malloc(sizeof(*testmem));
-    struct memPartageHeader *testmemheader = malloc(sizeof(*testmemheader));
-    int c;
-    char *id;
-
-    while((c = getopt (argc, argv, "a:")) != -1){
-        switch (c){
-            case 'a':
-                id = optarg;
-                printf("Shared mem name: %s\n",id);
-                break;
-            default:
-                abort();
-        }
-    }  
-
-    if(initMemoirePartageeEcrivain(id, testmem, (size_t)32,testmemheader) == 0){
-        printf("mem correctly initialized\n");
-    }
-    else{
-        exit(1);
-    }
-    return 0;
-}

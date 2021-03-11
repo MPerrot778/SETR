@@ -239,7 +239,7 @@ int main(int argc, char* argv[]){
     if(prepareMemoire(frameSize,frameSize)<0){
         printf("Failed to init memory pool\n");
         exit(EXIT_FAILURE);
-    } // À débugger
+    } 
 
     if(initMemoirePartageeEcrivain(outMem, memPartage, frameSize, memPartageHeader)){
         printf("Failed to init shared memory\n");
@@ -251,8 +251,6 @@ int main(int argc, char* argv[]){
 
     // Decoding loop
     while (1) {
-
-        pthread_mutex_lock(&memPartage->header->mutex);
 
         // looping to begining of the file, if end reached
         if (offset >= inFile_stat_info.st_size - 4) {
@@ -274,20 +272,19 @@ int main(int argc, char* argv[]){
         decompressed_image_size = vidInfos->largeur*vidInfos->hauteur*actual_comp;
         memPartage->data = (unsigned char *)tempsreel_malloc(decompressed_image_size);
 
-        memcpy(memPartage->data, frame, decompressed_image_size);
-        enregistreImage(memPartage->data,memPartage->header->hauteur,memPartage->header->largeur,memPartage->header->canaux, "imgTest.ppm");
+        memPartage->data = frame;
+        //enregistreImage(memPartage->data,memPartage->header->hauteur,memPartage->header->largeur,memPartage->header->canaux, "imgTest.ppm");
 
         //liberation du mutex et mise a jour de notre index prive
         offset += compressed_image_size;
-        current_reader_idx = memPartage->header->frameReader;
         memPartage->header->frameWriter++;
+
         pthread_mutex_unlock(&memPartage->header->mutex);
 
-        while (current_reader_idx == memPartage->header->frameReader); //on attend apres le lecteur
-        
+        while (attenteEcrivain(memPartage)); //on attend apres le lecteur
+
         tempsreel_free(frame);
         tempsreel_free(memPartage->data);
-        printf("mem freed\n");
     }
     return 0;
 
