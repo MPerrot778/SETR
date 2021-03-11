@@ -316,6 +316,7 @@ int main(int argc, char* argv[])
 		if(initMemoirePartageeLecteur(argv[i],&zones[i]) != 0)
 			ErrorExit("initMemoirePartageeLecteur - Compositeur");
 	}
+	printf("shared memory readed initialized\n");
 
 	for(int i=0; i < nbrActifs; i++) {
 		if(zones[i].tailleDonnees > frame)			

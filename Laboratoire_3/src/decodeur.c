@@ -59,6 +59,8 @@ int main(int argc, char* argv[]){
     int c;
     char *svalue;
     char *dvalue;
+    char *inFile;
+    char *outMem;
     int deadline_flag = 0;
     struct sched_param p;
     struct sched_attr attr;
@@ -154,11 +156,6 @@ int main(int argc, char* argv[]){
         }
     }
 
-    if(argc == 1){
-        fprintf(stderr,"%s [-s SCHED_TYPE] [-d SCHED_ATTR] input_flux output_flux\n",argv[0]);
-        exit(EXIT_FAILURE);        
-    }
-
     if(deadline_flag){
        if(sched_setattr(getpid(),&attr,0)){
            perror("sched_setattr()");
@@ -169,12 +166,24 @@ int main(int argc, char* argv[]){
     if(debug_flag){
         // ADD routine for debug
         printf("Debug mode activated\n");
+        inFile = "240p/02_Sintel.ulv";
+        outMem = "/mem1";
     }    
-
+    else {
+        if(argc == 1){
+            fprintf(stderr,"%s [-s SCHED_TYPE] [-d SCHED_ATTR] input_flux output_flux\n",argv[0]);
+            exit(EXIT_FAILURE);        
+        }
+        printf("%d\n",optind);
+        inFile = (char*)argv[optind];
+        outMem = (char*)argv[optind+1];    
+    }
+    printf("%s\n",inFile);
     // algorithm variable
-    char *inFile = (char*)argv[optind];
-    char *outMem = (char*)argv[optind+1];
-
+    if (mlockall(MCL_CURRENT | MCL_FUTURE ))
+    {
+        perror("mlockall failed:");
+    }
     int   offset   = 0;
     int   frameSize = 0;
 
@@ -227,7 +236,10 @@ int main(int argc, char* argv[]){
     frameSize = vidInfos->largeur*vidInfos->hauteur*vidInfos->canaux;
     
     
-    prepareMemoire(frameSize,frameSize); // À débugger
+    if(prepareMemoire(frameSize,frameSize)<0){
+        printf("Failed to init memory pool\n");
+        exit(EXIT_FAILURE);
+    } // À débugger
 
     if(initMemoirePartageeEcrivain(outMem, memPartage, frameSize, memPartageHeader)){
         printf("Failed to init shared memory\n");
@@ -260,10 +272,10 @@ int main(int argc, char* argv[]){
         memPartage->header->canaux = actual_comp;
 
         decompressed_image_size = vidInfos->largeur*vidInfos->hauteur*actual_comp;
+        memPartage->data = (unsigned char *)tempsreel_malloc(decompressed_image_size);
 
         memcpy(memPartage->data, frame, decompressed_image_size);
-
-        tempsreel_free(frame);
+        enregistreImage(memPartage->data,memPartage->header->hauteur,memPartage->header->largeur,memPartage->header->canaux, "imgTest.ppm");
 
         //liberation du mutex et mise a jour de notre index prive
         offset += compressed_image_size;
@@ -272,7 +284,10 @@ int main(int argc, char* argv[]){
         pthread_mutex_unlock(&memPartage->header->mutex);
 
         while (current_reader_idx == memPartage->header->frameReader); //on attend apres le lecteur
-
+        
+        tempsreel_free(frame);
+        tempsreel_free(memPartage->data);
+        printf("mem freed\n");
     }
     return 0;
 
