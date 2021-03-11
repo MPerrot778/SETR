@@ -23,12 +23,11 @@ int initMemoirePartageeLecteur(const char* identifiant, struct memPartage *zone)
 
     void* shm_header = mmap(NULL, s.st_size, PROT_WRITE | PROT_READ, MAP_SHARED, zone->fd, 0);
 
-    struct memPartageHeader* header = (struct memPartageHeader*)shm_header;
+    memPartageHeader* header = (memPartageHeader*)shm_header;
 
-    zone->data = (((unsigned char*)shm_header) + sizeof(struct memPartageHeader));
+    zone->data = (((unsigned char*)shm_header) + sizeof(memPartageHeader));
     zone->header = header;
-    zone->tailleDonnees = s.st_size - sizeof(struct memPartageHeader);
-    zone->copieCompteur = 0;
+    zone->tailleDonnees = s.st_size - sizeof(memPartageHeader);
 
     while(zone->header->frameWriter == 0); 
     
@@ -47,7 +46,7 @@ int initMemoirePartageeEcrivain(const char* identifiant, struct memPartage* zone
 
     // printf("%d\n", shm_fd);
 
-    if (ftruncate(shm_fd, taille + sizeof(struct memPartageHeader)) == -1)
+    if (ftruncate(shm_fd, taille + sizeof(memPartageHeader)) == -1)
         ErrorExit("ftruncate");
 
     void* shm_header = mmap(NULL, taille, PROT_WRITE | PROT_READ, MAP_SHARED, shm_fd, 0);
@@ -56,7 +55,7 @@ int initMemoirePartageeEcrivain(const char* identifiant, struct memPartage* zone
     if (shm_header == MAP_FAILED) 
         ErrorExit("mmap");
 
-    headerInfos = (struct memPartageHeader*)shm_header;
+    memPartageHeader* header = (memPartageHeader*)shm_header;
     
     /* Create Mutex in shared memory header */
 
@@ -65,16 +64,19 @@ int initMemoirePartageeEcrivain(const char* identifiant, struct memPartage* zone
     pthread_mutexattr_setpshared(&mutex_attr, PTHREAD_PROCESS_SHARED);
 
     pthread_mutex_init(&headerInfos->mutex, &mutex_attr);
-
-    headerInfos->frameReader = 0;
-    headerInfos->frameWriter = 1;
-
+    pthread_mutex_lock(&headerInfos->mutex);
+    
     zone->fd = shm_fd;
-    zone->header = headerInfos;
+    zone->header = header;
     zone->tailleDonnees = taille;
-    zone->copieCompteur++;
+    zone->copieCompteur = 0;
 
-    return 0; // return ou exit(EXIT_SUCCESS) - same thing?
+    header->frameReader = 0;
+    header->frameWriter = 1;
+    header->canaux = headerInfos->canaux;
+    header->fps = headerInfos->fps;   
+
+    return 0;
     
 }
 

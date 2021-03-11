@@ -6,10 +6,8 @@
 #include <stdint.h>
 #include "allocateurMemoire.h"
 
-#define TAILLE_MAX  5
-
-static void* bloc[TAILLE_MAX];
-static uint8_t blocLibre[TAILLE_MAX];
+static void* bloc[ALLOC_N_BIG];
+static uint8_t blocLibre[ALLOC_N_BIG];
 
 int prepareMemoire(size_t tailleImageEntree, size_t tailleImageSortie) {
 
@@ -21,19 +19,23 @@ int prepareMemoire(size_t tailleImageEntree, size_t tailleImageSortie) {
         taille_bloc = tailleImageEntree;
     }
 
-    for(int i = 0; i < TAILLE_MAX; i++) {
-        bloc[i] = malloc(taille_bloc);
+    for(int i = 0; i < ALLOC_N_BIG; i++) {
+        bloc[i] = malloc(taille_bloc*TAILLE_MAX);
         if(bloc[i]==NULL){
             return -1;
         }
         blocLibre[i] = 1;
     }
-    return 0;
+
+    if (mlockall(MCL_CURRENT) != 0)
+        ErrorExit("mlock");
+    
+    return taille_bloc;
 }
 
 void* tempsreel_malloc(size_t taille) {
 
-    for(int i = 0; i < TAILLE_MAX -1; i++) {
+    for(int i = 0; i < ALLOC_N_BIG; i++) {
         if(blocLibre[i] == 1) {
             blocLibre[i] = 0;
             return bloc[i];
@@ -44,10 +46,11 @@ void* tempsreel_malloc(size_t taille) {
 
 void tempsreel_free(void* ptr) {
 
-    for (int i = 0; i < TAILLE_MAX-1; i++) {
+    for (int i = 0; i < ALLOC_N_BIG; i++) {
         if(bloc[i] == ptr) {
             blocLibre[i] = 1;
             return;
         }
     }
+    ErrorExit("tempsreel_free");
 }
