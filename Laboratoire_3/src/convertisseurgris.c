@@ -144,37 +144,34 @@ int main(int argc, char* argv[]){
     struct memPartage lecteur;
     struct memPartage ecrivain;
 
-    int compteur_lecteur = 0;
-    int compteur_ecrivain = 0;
-
     if (initMemoirePartageeLecteur(argv[optind], &lecteur) != 0)
         ErrorExit("initMemoireLectuer - gris");
 
-    pthread_mutex_lock(&lecteur.header->mutex);
-    
-    uint32_t largeur = lecteur.header->largeur;
-    uint32_t hauteur = lecteur.header->hauteur;
-    uint32_t canaux = lecteur.header->canaux;
-    size_t tailleDonnes = largeur*hauteur*canaux;
+    prepareMemoire(lecteur.tailleDonnees,0);
 
-    prepareMemoire(lecteur.tailleDonnees, 2*tailleDonnes);
+    struct memPartageHeader header_ecrivain;
 
-    if (initMemoirePartageeEcrivain(argv[optind+1], &ecrivain, tailleDonnes,lecteur.header) != 0)
+    header_ecrivain.header->largeur = lecteur.header->largeur;
+    header_ecrivain.header->hauteur = lecteur.header->largeur;
+    header_ecrivain.header->canaux = 1;
+    header_ecrivain.fps = lecteur.header->fps;
+    size_t tailleDonnees = header_ecrivain.header->largeur * header_ecrivain.hauteur->hauteur;
+
+    if (initMemoirePartageeEcrivain(argv[optind+1], &ecrivain, tailleDonnees, &header_ecrivain) != 0)
         ErrorExit("initMemoireEcrivain - gris");
 
-    pthread_mutex_lock(&ecrivain.header->mutex);
+    int in_height = lecteur.header->hauteur;
+    int in_width = lecteur.header->largeur;
 
     while(1) {
 
-        lecteur.header->frameReader += 1;
-        compteur_lecteur = lecteur.header->frameWriter;
-        pthread_mutex_unlock(&lecteur.header->mutex);
+        attenteLecteur(&lecteur);
+        lecteur.header->frameReader++;
 
-        convertToGray(lecteur.data, hauteur,largeur,canaux,ecrivain.data);
+        convertToGray(lecteur.data, in_height,in_width,lecteur.header->canaux ,ecrivain.data);
 
-        ecrivain.header->frameWriter += 1;
-        ecrivain.copieCompteur = ecrivain.header->frameReader;
-
+        lecteur.copieCompteur = lecteur.header->frameWriter;
+        // rendu la
         compteur_ecrivain = ecrivain.header->frameReader;
         pthread_mutex_unlock(&ecrivain.header->mutex);
         while(compteur_ecrivain == lecteur.header->frameWriter);
