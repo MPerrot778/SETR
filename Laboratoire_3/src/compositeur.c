@@ -307,13 +307,14 @@ int main(int argc, char* argv[])
     if(debug_flag){
         // ADD routine for debug
         printf("Debug mode activated\n");
+		nbrActifs = 1;
     }    	
 
 	/* open shared memory */
 
 	struct memPartage zones[nbrActifs];
 	for(int i=0; i < nbrActifs; i++) {
-		if(initMemoirePartageeLecteur(argv[i],&zones[i]) != 0)
+		if(initMemoirePartageeLecteur(argv[i+optind],&zones[i]) != 0)
 			ErrorExit("initMemoirePartageeLecteur - Compositeur");
 	}
 	printf("shared memory readed initialized\n");
@@ -323,7 +324,10 @@ int main(int argc, char* argv[])
 			frame = zones[i].tailleDonnees;		// get biggest frame size
 	}
 
-	prepareMemoire(frame, 0);
+    if(prepareMemoire(frame,0)<0){
+        printf("Failed to init memory pool\n");
+        exit(EXIT_FAILURE);
+    } 
 	
     // Initialisation des structures nécessaires à l'affichage
     long int screensize = 0;
@@ -392,9 +396,8 @@ int main(int argc, char* argv[])
 	for (int i = 0; i < nbrActifs; i++) {
 		gettimeofday(&time[i], NULL);
 		diff[i].tv_sec = 0;
-		diff[i].tv_sec = 1000000/zones[i].header->fps;
+		diff[i].tv_usec = (float)(zones[i].header->fps/1000000);
 	}
-
 	struct timeval ctr_time;
 	gettimeofday(&ctr_time, NULL);
 
@@ -427,10 +430,9 @@ int main(int argc, char* argv[])
 			
 
 				fseek(log,0,SEEK_END);
-				for (int i=0; i < nbrActifs; i++) {
-					float count = frame_count[i];
-					float fps = count/time_diff;
-					fprintf(log,"(%d) flux %d: %f\n", ctr_time, i, fps);
+				for (int i=0; i < nbrActifs; i++) {			
+					float fps = frame_count[i]/time_diff;
+					fprintf(log,"(%d) flux %d: %f\n", (int)ctr_time.tv_sec, i, fps);
 					frame_count[i] = 0;
 				}
 				fclose(log);
@@ -475,7 +477,6 @@ int main(int argc, char* argv[])
 			}        
             
 		}		
-
 
     // cleanup
     // Retirer le mmap
