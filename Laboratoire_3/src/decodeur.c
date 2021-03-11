@@ -178,7 +178,7 @@ int main(int argc, char* argv[]){
         inFile = (char*)argv[optind];
         outMem = (char*)argv[optind+1];    
     }
-    printf("%s\n",inFile);
+
     // algorithm variable
     if (mlockall(MCL_CURRENT | MCL_FUTURE ))
     {
@@ -186,18 +186,19 @@ int main(int argc, char* argv[]){
     }
     int   offset   = 0;
     int   frameSize = 0;
+    int frameCount = 0;
 
-    uint32_t current_reader_idx = 0;
     uint32_t compressed_image_size;
     uint32_t decompressed_image_size = 0;
     int actual_comp = 0;
 
     struct stat inFile_stat_info;
-    struct videoInfos *vidInfos = (struct videoInfos *)malloc(sizeof(vidInfos));
-    struct memPartage *memPartage = (struct memPartage *)malloc(sizeof(memPartage));;
-    struct memPartageHeader *memPartageHeader = (struct memPartageHeader *)malloc(sizeof(memPartageHeader));;
-    memPartageHeader->frameReader = 0;
-    memPartageHeader->frameWriter = 0;
+    struct videoInfos vidInfos;
+    struct memPartage memPartage;
+    struct memPartageHeader memPartageHeader;
+
+    memPartageHeader.frameReader = 0;
+    memPartageHeader.frameWriter = 0;
 
     // start of the algorithm
     int fd = open(inFile, O_RDONLY);
@@ -218,22 +219,22 @@ int main(int argc, char* argv[]){
     offset += 4;
 
     // Parsing video infos (l,h,c,fps) into memPartagerHeader
-    memcpy(&vidInfos->hauteur, inFile_mem + offset,4);
-    memPartageHeader->hauteur = vidInfos->hauteur;
+    memcpy(&vidInfos.largeur, inFile_mem + offset,4);
+    memPartageHeader.largeur = vidInfos.largeur;
     offset += 4;
-    memcpy(&vidInfos->largeur, inFile_mem + offset,4);
-    memPartageHeader->largeur = vidInfos->largeur;
+    memcpy(&vidInfos.hauteur, inFile_mem + offset,4);
+    memPartageHeader.hauteur = vidInfos.hauteur;
     offset += 4;
-    memcpy(&vidInfos->canaux, inFile_mem + offset, 4);
-    memPartageHeader->canaux = vidInfos->canaux;
+    memcpy(&vidInfos.canaux, inFile_mem + offset, 4);
+    memPartageHeader.canaux = vidInfos.canaux;
     offset += 4;
-    memcpy(&vidInfos->fps, inFile_mem + offset, 4);
-    memPartageHeader->fps = vidInfos->fps;
+    memcpy(&vidInfos.fps, inFile_mem + offset, 4);
+    memPartageHeader.fps = vidInfos.fps;
     offset += 4;
-    printf("video largeur: %d \nvideo hauteur: %d \nvideo nbr cannaux: %d \nvideo fps: %d \n", vidInfos->largeur, vidInfos->hauteur, vidInfos->canaux, vidInfos->fps);
+    printf("video largeur: %d \nvideo hauteur: %d \nvideo nbr cannaux: %d \nvideo fps: %d \n", vidInfos.largeur, vidInfos.hauteur, vidInfos.canaux, vidInfos.fps);
 
     // compute frameSize (l*h*c) and prepare memory pool
-    frameSize = vidInfos->largeur*vidInfos->hauteur*vidInfos->canaux;
+    frameSize = vidInfos.largeur*vidInfos.hauteur*vidInfos.canaux;
     
     
     if(prepareMemoire(frameSize,frameSize)<0){
@@ -241,13 +242,13 @@ int main(int argc, char* argv[]){
         exit(EXIT_FAILURE);
     } 
 
-    if(initMemoirePartageeEcrivain(outMem, memPartage, frameSize, memPartageHeader)){
+    if(initMemoirePartageeEcrivain(outMem, &memPartage, frameSize, &memPartageHeader)){
         printf("Failed to init shared memory\n");
         exit(EXIT_FAILURE);
     }
 
 
-    memPartage->header->frameWriter = 0;
+    memPartage.header->frameWriter = 0;
 
     // Decoding loop
     while (1) {
@@ -263,31 +264,27 @@ int main(int argc, char* argv[]){
         unsigned char *frame = (unsigned char *)tempsreel_malloc(compressed_image_size);
         //decode jpg img
 
-        frame = jpgd::decompress_jpeg_image_from_memory((const unsigned char*) (inFile_mem + offset), compressed_image_size, (int *)&vidInfos->largeur, (int *)&vidInfos->hauteur, &actual_comp, vidInfos->canaux);
+        frame = jpgd::decompress_jpeg_image_from_memory((const unsigned char*) (inFile_mem + offset), compressed_image_size, &vidInfos.largeur, &vidInfos.hauteur, &actual_comp, memPartage.canaux);
         
-        memPartage->header->largeur = vidInfos->largeur;
-        memPartage->header->hauteur = vidInfos->hauteur;
-        memPartage->header->canaux = actual_comp;
+        memPartage.header->largeur = vidInfos.largeur;
+        memPartage.header->hauteur = vidInfos.hauteur;
+        memPartage.header->canaux = actual_comp;
 
-        decompressed_image_size = vidInfos->largeur*vidInfos->hauteur*actual_comp;
-        memPartage->data = (unsigned char *)tempsreel_malloc(decompressed_image_size);
+        decompressed_image_size = memPartage.header->largeur*memPartage.header->hauteur*actual_comp;
 
-        memPartage->data = frame;
-        //enregistreImage(memPartage->data,memPartage->header->hauteur,memPartage->header->largeur,memPartage->header->canaux, "imgTest.ppm");
+
+        memcpy(memPartage.data, frame, decompressed_image_size);
 
         //liberation du mutex et mise a jour de notre index prive
         offset += compressed_image_size;
-        memPartage->header->frameWriter++;
+        memPartage.copieCompteur = memPartage.header->frameReader;
+        pthread_mutex_unlock(&memPartage.header->mutex);
 
-        pthread_mutex_unlock(&memPartage->header->mutex);
-
-        while (attenteEcrivain(memPartage)); //on attend apres le lecteur
-
+        attenteEcrivain(&memPartage); //on attend apres le lecteur
+        memPartage.header->frameWriter++;
         tempsreel_free(frame);
-        tempsreel_free(memPartage->data);
-    }
-    return 0;
 
+    }
 
     return 0;
 }
