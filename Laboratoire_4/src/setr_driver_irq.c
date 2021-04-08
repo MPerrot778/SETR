@@ -143,14 +143,14 @@ static irq_handler_t  setr_irq_handler(unsigned int irq, void *dev_id, struct pt
     // Voyez les commentaires du tasklet pour une piste potentielle de synchronisation.
     // Le seul travail de cette IRQ est de céduler un tasklet qui fera le travail
     // TODO
-
+    printk(KERN_INFO "Interrupt on IRQ: (%d)",irq);
     // On retourne en indiquant qu'on a géré l'interruption
     return (irq_handler_t) IRQ_HANDLED;
 }
 
 
 static int __init setrclavier_init(void){
-    int i, ok;
+    int i, ok, err;
     printk(KERN_INFO "SETR_CLAVIER : Initialisation du driver commencee\n");
 
     majorNumber = register_chrdev(0, DEV_NAME, &fops);
@@ -192,18 +192,31 @@ static int __init setrclavier_init(void){
     // enregistrer la fonction de traitement de l'interruption.
     // Attention, cette fonction devra être appelée 4 fois (une fois pour chaque GPIO)!
     //
+
+    for(i = 0; i < 4; i++){
+        err = gpio_request_one(gpiosEcrire[i],GPIOF_OUT_INIT_HIGH, gpiosEcrireNoms[i]);
+        if (err) 
+            printk(KERN_ALERT "Erreur (%d) lors du request du GPIO#{%d}!\n", err, gpiosEcrire[i]);
+        err = gpio_request_one(gpiosLire[i],GPIOF_IN, gpiosLireNoms[i]);
+        if (err) 
+            printk(KERN_ALERT "Erreur (%d) lors du request du GPIO#{%d}!\n", err, gpiosLire[i]);
+
+        irqId[i] = gpio_to_irq(gpiosLire[i]);
+        ok = request_irq(irqId[i],                            // Le numéro de l'interruption, obtenue avec gpio_to_irq
+                        (irq_handler_t) setr_irq_handler,  // Pointeur vers la routine de traitement de l'interruption
+                        IRQF_TRIGGER_FALLING,               // On veut une interruption sur le front montant (lorsque le bouton est pressé)
+                        "setr_irq_handler",                // Le nom de notre interruption
+                        NULL);                             // Paramètre supplémentaire inutile pour vous
+        if(ok != 0)
+            printk(KERN_ALERT "Erreur (%d) lors de l'enregistrement IRQ #{%d}!\n", ok, irqId[i]);
+
+    }
+    
+
     // Vous devez également initialiser le mutex de synchronisation.
+    mutex_init(&sync);
 
-    ok = request_irq(irqno,                 // Le numéro de l'interruption, obtenue avec gpio_to_irq
-         (irq_handler_t) setr_irq_handler,  // Pointeur vers la routine de traitement de l'interruption
-         IRQF_TRIGGER_RISING,               // On veut une interruption sur le front montant (lorsque le bouton est pressé)
-         "setr_irq_handler",                // Le nom de notre interruption
-         NULL);                             // Paramètre supplémentaire inutile pour vous
-    if(ok != 0)
-        printk(KERN_ALERT "Erreur (%d) lors de l'enregistrement IRQ #{%d}!\n", ok, irqno);
-
-
-        printk(KERN_INFO "SETR_CLAVIER : Fin de l'Initialisation!\n"); // Made it! device was initialized
+    printk(KERN_INFO "SETR_CLAVIER : Fin de l'Initialisation!\n"); // Made it! device was initialized
 
     return 0;
 }
