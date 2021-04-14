@@ -1,12 +1,12 @@
 /******************************************************************************
 * H2020
 * LABORATOIRE 4, Systèmes embarqués et temps réel
-* Ébauche de code pour le pilote utilisant le polling
+* Ébauche de code pour le pilote utilisant les interruptions
 * Marc-André Gardner, mars 2019
 *
 * Ce fichier contient la structure du pilote qu'il vous faut implémenter. Ce
-* pilote fonctionne en mode "polling", c'est-à-dire qu'il vérifie en permanance
-* si un événement (pression d'une touche) s'est produit, grâce à un thread noyau.
+* pilote fonctionne avec des interruptions, c'est-à-dire qu'il vérifie la valeur
+* des touches appuyées que lorsqu'une touche est effectivement enfoncée.
 *
 * Prenez le temps de lire attentivement les notes de cours et les commentaires
 * contenus dans ce fichier, ils contiennent des informations cruciales.
@@ -25,13 +25,11 @@
 #include <linux/gpio.h>             // Pour accéder aux GPIO du Raspberry Pi
 #include <linux/fs.h>               // Pour accéder au système de fichier et créer un fichier spécial dans /dev
 #include <linux/uaccess.h>          // Permet d'accéder à copy_to_user et copy_from_user
-#include <linux/kthread.h>          // Utilisation des threads noyau
 #include <linux/delay.h>            // Fonctions d'attente, en particulier msleep
 #include <linux/string.h>           // Différentes fonctions de manipulation de string, plus memset et memcpy
 #include <linux/mutex.h>            // Mutex et synchronisation
 #include <linux/interrupt.h>        // Définit les symboles pour les interruptions et les tasklets
 #include <linux/atomic.h>           // Synchronisation par valeur atomique
-
 
 // Le nom de notre périphérique et le nom de sa classe
 #define DEV_NAME "claviersetr"
@@ -42,6 +40,9 @@
 #define NBR_LIGNES    4
 #define NBR_COLONNES  3
 
+
+// On déclare tout de suite le nom de la fonction gérant les interruptions
+static irq_handler_t  setr_irq_handler(unsigned int irq, void *dev_id, struct pt_regs *regs);
 
 // Déclaration des fonctions pour gérer notre fichier
 // Nous ne définissons que open(), close() et read()
@@ -65,8 +66,8 @@ static size_t posCouranteEcriture = 0;      // Position de la prochaine écritur
 static struct class*  setrClasse  = NULL;   // Contiendra les informations sur la classe de notre pilote
 static struct device* setrDevice = NULL;    // Contiendra les informations sur le périphérique associé
 
-static struct mutex sync;                          // Mutex servant à synchroniser les accès au buffer
-static struct task_struct *task;            // Réfère au thread noyau
+static struct mutex sync;                   // Mutex servant à synchroniser les accès au buffer
+static atomic_t irqActif = ATOMIC_INIT(1);  // Pour déterminer si les interruptions doivent être traitées
 
 // 4 GPIO doivent être assignés pour l'écriture, et 4 en lecture (voir énoncé)
 // Nous vous proposons les choix suivants, mais ce n'est pas obligatoire
@@ -75,6 +76,8 @@ static int  gpiosColonnes[] = {12, 16, 20, 21};             // Correspond aux pi
 // Les noms des différents GPIO
 static char* gpiosLignesNoms[] = {"L1", "L2", "L3", "L4"};
 static char* gpiosColonnesNoms[] = {"C1", "C2", "C3", "C4"};
+
+static unsigned int irqId[4];               // Contient les numéros d'interruption pour chaque broche de lecture
 
 // Les patrons de balayage (une seule ligne doit être active à la fois)
 static int   patterns[4][4] = {
@@ -96,35 +99,44 @@ static char valeursClavier[4][4] = {
 // pour ne pas répéter une touche qui était déjà enfoncée.
 static int dernierEtat[4][4] = {0};
 
-
-
-// Vous devez déclarer cette variable comme paramètre
-static unsigned int pausePollingMs = 20;
-module_param(pausePollingMs, uint, S_IRUGO);
-MODULE_PARM_DESC(pausePollingMs, " Duree de la pause apres chaque polling (en ms, 20ms par defaut)");
-
 // Durée (en ms) du "debounce" des touches
 static int dureeDebounce = 50;
 
 
 
-static int pollClavier(void *arg){
-    // Cette fonction contient la boucle principale du thread détectant une pression sur une touche
+
+void func_tasklet_polling(unsigned long param){
+    // Cette fonction est le coeur d'exécution du tasklet
+    // Elle fait à peu de choses près la même chose que le kthread
+    // dans le pilote que vous avez précédemment écrit (par polling),
+    // à savoir qu'elle balaye les différentes lignes pour trouver quelle
+    // touche est pressée.
+    // Une différence majeure est que ce tasklet ne contient pas de boucle,
+    // il ne s'exécute qu'une seule fois par interruption!
     int ligneIdx, colIdx, buffIdx, posIdx, val, i;
     char tempBuffer[16];
-    printk(KERN_INFO "SETR_CLAVIER : Poll clavier declenche! \n");
-    while(!kthread_should_stop()){           // Permet de s'arrêter en douceur lorsque kthread_stop() sera appelé
-      set_current_state(TASK_RUNNING);      // On indique qu'on est en train de faire quelque chose
 
-      // TODO
-      // Écrivez le code permettant
-      // 1) De passer au travers de tous les patrons de balayage
-      // 2) Pour chaque patron, vérifier la valeur des lignes d'entrée
-      // 3) Selon ces valeurs et le contenu de dernierEtat, déterminer si une nouvelle touche a été pressée
-      // 4) Mettre à jour le buffer et dernierEtat en vous assurant d'éviter les race conditions avec le reste du module
-      buffIdx = 0;
+    // TODO
+    // Écrivez le code permettant
+    // 1) D'éviter le traitement de nouvelles interruptions : nous allons changer
+    //      les niveaux des broches de lecture, il ne faut pas que ce soit interprété
+    //      comme une nouvelle pression sur une touche, sinon ce tasklet sera rappelé
+    //      en boucle! Vous êtes libres d'utiliser l'approche que vous souhaitez pour
+    //      éviter cela, mais la variable atomique irqActive pourrait vous être utile...
+    // 2) De passer au travers de tous les patrons de balayage
+    // 3) Pour chaque patron, vérifier la valeur des lignes d'entrée
+    // 4) Selon ces valeurs et le contenu de dernierEtat, déterminer si une nouvelle touche a été pressée
+    // 5) Mettre à jour le buffer et dernierEtat en vous assurant d'éviter les race conditions avec le reste du module
+    // 6) Remettre toutes les lignes à 1 (pour réarmer l'interruption)
+    // 7) Réactiver le traitement des interruptions
 
-      for(ligneIdx = 0; ligneIdx < NBR_LIGNES; ligneIdx++){
+    buffIdx = 0;
+
+    for(i = 0; i < NBR_COLONNES; i++){
+        disable_irq_nosync(irqId[i]);
+    }
+
+    for(ligneIdx = 0; ligneIdx < NBR_LIGNES; ligneIdx++){
         gpio_set_value(gpiosLignes[0],patterns[ligneIdx][0]);
         gpio_set_value(gpiosLignes[1],patterns[ligneIdx][1]);
         gpio_set_value(gpiosLignes[2],patterns[ligneIdx][2]);
@@ -141,31 +153,55 @@ static int pollClavier(void *arg){
             }   
           }
         }
-
-
       }
-
-      mutex_lock(&sync);
-      for(i = 0; i < buffIdx; i++){
+    
+    mutex_lock(&sync);
+    for(i = 0; i < buffIdx; i++){
         posIdx = posCouranteEcriture%TAILLE_BUFFER;
         data[posIdx] = tempBuffer[i];
         posCouranteEcriture++;
-      }
-      mutex_unlock(&sync);
-
-      set_current_state(TASK_INTERRUPTIBLE); // On indique qu'on peut ere interrompu
-      msleep(pausePollingMs);                // On se met en pause un certain temps
     }
-    printk(KERN_INFO "SETR_CLAVIER : Poll clavier stop! \n");
-    return 0;
+    mutex_unlock(&sync);
+
+    gpio_set_value(gpiosLignes[0],1);
+    gpio_set_value(gpiosLignes[1],1);
+    gpio_set_value(gpiosLignes[2],1);
+    gpio_set_value(gpiosLignes[3],1);   
+
+    for(i = 0; i < NBR_COLONNES; i++){
+        enable_irq(irqId[i]);
+    }
+
+    atomic_set(&irqActif, 1);
+}
+
+// On déclare le tasklet avec la macro DECLARE_TASKLET
+DECLARE_TASKLET(tasklet_polling, func_tasklet_polling, 0);
+
+
+static irq_handler_t  setr_irq_handler(unsigned int irq, void *dev_id, struct pt_regs *regs){
+    // Ceci est la fonction recevant l'interruption. Son seul rôle consiste à
+    // céduler un tasklet qui fera le travail de balayage.
+    // Attention toutefois : ce balayage ne doit pas faire en sorte que de _nouvelles_
+    // interruptions soient traitées et lancent encore le tasklet, sinon vous vous
+    // retrouverez dans une boucle sans fin où le tasklet crée des interruptions,
+    // qui lancent le tasklet, qui crée des interruptions, etc.
+    // Voyez les commentaires du tasklet pour une piste potentielle de synchronisation.
+    // Le seul travail de cette IRQ est de céduler un tasklet qui fera le travail
+    // TODO
+    if(atomic_dec_and_test(&irqActif)){
+        tasklet_schedule(&tasklet_polling);
+    }
+
+    // On retourne en indiquant qu'on a géré l'interruption
+    return (irq_handler_t) IRQ_HANDLED;
 }
 
 
 static int __init setrclavier_init(void){
-    int i;
+    int i, irqno, ok;
     printk(KERN_INFO "SETR_CLAVIER : Initialisation du driver commencee\n");
 
-    // On enregistre notre pilote
     majorNumber = register_chrdev(0, DEV_NAME, &fops);
     if (majorNumber<0){
       printk(KERN_ALERT "SETR_CLAVIER : Erreur lors de l'appel a register_chrdev!\n");
@@ -179,6 +215,7 @@ static int __init setrclavier_init(void){
       printk(KERN_ALERT "SETR_CLAVIER : Erreur lors de la creation de la classe de peripherique\n");
       return PTR_ERR(setrClasse);
     }
+    printk(KERN_INFO "EBBChar: device class registered correctly\n");
 
     // Création du pilote de périphérique associé
     setrDevice = device_create(setrClasse, NULL, MKDEV(majorNumber, 0), NULL, DEV_NAME);
@@ -189,40 +226,54 @@ static int __init setrclavier_init(void){
       return PTR_ERR(setrDevice);
     }
 
+
     // TODO
     // Initialisez les GPIO. Chaque GPIO utilisé doit être enregistré (fonction gpio_request)
     // et se voir donner une direction (gpio_direction_input / gpio_direction_output).
     // Ces opérations peuvent également être combinées si vous trouvez la bonne fonction pour le faire.
-    // Finalement, assurez-vous que les entrées soient robustes aux rebondissements (bouncing).
+    //
+    // Assurez-vous que les entrées soient robustes aux rebondissements (bouncing).
     // Vous devez mettre en place un "debouncing" en utilisant le paramètre dureeDebounce défini plus haut.
+    //
+    // Finalement, vous devez enregistrer une IRQ pour chaque GPIO en entrée. Utilisez
+    // pour ce faire gpio_to_irq, ce qui vous donnera le numéro d'interruption lié à un
+    // GPIO en particulier, puis appelez request_irq comme présenté plus bas pour
+    // enregistrer la fonction de traitement de l'interruption.
+    // Attention, cette fonction devra être appelée 4 fois (une fois pour chaque GPIO)!
     //
     // Vous devez également initialiser le mutex de synchronisation.
 
     // Lignes
     for(i = 0; i < NBR_LIGNES; i++){
 
-      if(gpio_request_one(gpiosLignes[i], GPIOF_OUT_INIT_LOW, gpiosLignesNoms[i]) > 0 ){
+      if(gpio_request_one(gpiosLignes[i], GPIOF_OUT_INIT_HIGH, gpiosLignesNoms[i]) > 0 ){
         printk(KERN_INFO "SETR_CLAVIER : Failed to init GPIO %d\n", gpiosLignes[i]);
         return PTR_ERR(setrDevice);
       }
     }
 
     // Colonnes
-    for(i = 0; i < NBR_COLONNES; i++){  
-
+    for(i = 0; i < NBR_COLONNES; i++){
       if(gpio_request_one(gpiosColonnes[i], GPIOF_IN, gpiosColonnesNoms[i]) > 0 ){
         printk(KERN_INFO "SETR_CLAVIER : Failed to init GPIO %d\n", gpiosColonnes[i]);
         return PTR_ERR(setrDevice);
       }
       gpio_set_debounce(gpiosColonnes[i],dureeDebounce);
 
+      irqno = gpio_to_irq(gpiosColonnes[i]);
+      irqId[i] = irqno;
+      ok = request_irq(irqno,                 // Le numéro de l'interruption, obtenue avec gpio_to_irq
+           (irq_handler_t) setr_irq_handler,  // Pointeur vers la routine de traitement de l'interruption
+           IRQF_TRIGGER_RISING,               // On veut une interruption sur le front montant (lorsque le bouton est pressé)
+           "setr_irq_handler",                // Le nom de notre interruption
+           NULL);                             // Paramètre supplémentaire inutile pour vous
+
+      if(ok != 0){
+          printk(KERN_ALERT "Erreur (%d) lors de l'enregistrement IRQ #{%d}!\n", ok, irqno);
+      }
     }
 
-
     mutex_init(&sync);
-    // Le mutex devrait avoir été initialisé avant d'appeler la ligne suivante!
-    task = kthread_run(pollClavier, NULL, "Thread_polling_clavier");
-
     printk(KERN_INFO "SETR_CLAVIER : Fin de l'Initialisation!\n"); // Made it! device was initialized
 
     return 0;
@@ -232,22 +283,22 @@ static int __init setrclavier_init(void){
 static void __exit setrclavier_exit(void){
     int i;
 
-    // On arrête le thread de lecture
-    kthread_stop(task);
-
     // TODO
     // Écrivez le code permettant de relâcher (libérer) les GPIO
     // Vous aurez pour cela besoin de la fonction gpio_free
+    // Vous devrez également relâcher les interruptions qui ont été
+    // précédemment enregistrées. Utilisez free_irq(irqno, NULL)
 
     // Lignes
     for(i = 0; i < NBR_LIGNES; i++){
-      gpio_free(gpiosLignes[i]);
+        gpio_free(gpiosLignes[i]);
     }
 
     // Colonnes
     for(i = 0; i < NBR_COLONNES; i++){
-      gpio_free(gpiosColonnes[i]);
-    }    
+        free_irq(irqId[i], NULL);
+        gpio_free(gpiosColonnes[i]);
+    }
 
     // On retire correctement les différentes composantes du pilote
     device_destroy(setrClasse, MKDEV(majorNumber, 0));
@@ -275,6 +326,11 @@ static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t *of
 
     // TODO
     // Implémentez cette fonction de lecture
+    //
+    // Notez que si le reste de votre code est cohérent, elle peut être _exactement_
+    // la même que pour le driver par polling. Le reste des explications est simplement
+    // un copier coller des explications de l'autre driver.
+
     // Celle-ci doit copier N caractères dans le buffer fourni en paramètre, N étant le minimum
     // entre le nombre d'octets disponibles dans le buffer et le nombre d'octets demandés (paramètre len).
     // Cette fonction DOIT se synchroniser au reste du module avec le mutex.
@@ -285,7 +341,6 @@ static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t *of
     // revienne alors à 0. Il est donc tout à fait possible que posCouranteEcriture soit INFÉRIEUR à
     // posCouranteLecture, et vous devez gérer ce cas sans perdre de caractères et en respectant les
     // autres conditions (par exemple, ne jamais copier plus que len caractères).
-
 
 
     int N = min((posCouranteEcriture-posCouranteLecture),len);
@@ -312,12 +367,13 @@ static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t *of
     return N;
 }
 
+
 // On enregistre les fonctions d'initialisation et de destruction
 module_init(setrclavier_init);
 module_exit(setrclavier_exit);
 
 // Description du module
 MODULE_LICENSE("GPL");            // Licence : laissez "GPL"
-MODULE_AUTHOR("Mikael et Ethan");           // Vos noms
-MODULE_DESCRIPTION("Lecteur de clavier externe");  // Description du module
-MODULE_VERSION("0.2");            // Numéri de version
+MODULE_AUTHOR("Vous!");           // Vos noms
+MODULE_DESCRIPTION("Lecteur de clavier externe, avec interruptions");  // Description du module
+MODULE_VERSION("0.2");            // Numéro de version
